@@ -11,4 +11,7 @@
     <color name="txtViewBg">#353A61</color>
     <color name="btnColor">#3CD27D</color>
     <color name="txtColor">#62678C</color>
+    <color name="red">#FF0000</color>
+    <color name="orange">#Ecb721</color>
+    <color name="green">#21ec21</color>
 </resources>

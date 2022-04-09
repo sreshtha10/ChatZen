@@ -1,9 +1,14 @@
 package com.sreshtha.chatappandroid.ui.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.sreshtha.chatappandroid.R
@@ -30,6 +35,8 @@ class LoginFragment:Fragment(){
             }
 
 
+
+
         }
 
     }
@@ -38,4 +45,7 @@ class LoginFragment:Fragment(){
         super.onDestroy()
         loginBinding = null
     }
+
+
+
 }
