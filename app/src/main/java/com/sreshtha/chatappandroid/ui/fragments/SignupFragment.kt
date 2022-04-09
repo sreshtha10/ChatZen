@@ -2,6 +2,7 @@ package com.sreshtha.chatappandroid.ui.fragments
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,19 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.FragmentSignupBinding
+import com.sreshtha.chatappandroid.ui.activities.MainActivity
 import java.util.regex.Pattern
 
 class SignupFragment:Fragment(){
     private var signupBinding:FragmentSignupBinding?=null
+    companion object{
+        const val TAG = "SIGNUP_FRAGMENT"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +63,22 @@ class SignupFragment:Fragment(){
                     Snackbar.make(view,"Password is too weak!",Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+
+                val auth = FirebaseAuth.getInstance()
+                auth.createUserWithEmailAndPassword(etEmail.text.toString(),etPassword.text.toString())
+                    .addOnCompleteListener {
+                        if(it.isSuccessful){
+                            Log.d(TAG,"createUserWithEmail:Success")
+                            //(activity as MainActivity).startAnimationActivity()
+                            Snackbar.make(view,"Account Created Successfully!",Snackbar.LENGTH_SHORT).show()
+                        }
+                        else{
+                            Log.d(TAG,"createUserWithEmail:Failure ${it.exception}")
+                            Snackbar.make(view,"Cannot Create Account!",Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+
+
             }
 
             etPassword.addTextChangedListener {
