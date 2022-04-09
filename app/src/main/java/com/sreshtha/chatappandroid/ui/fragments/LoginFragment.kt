@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.FragmentLoginBinding
 
 class LoginFragment:Fragment(){
@@ -20,6 +22,16 @@ class LoginFragment:Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        loginBinding?.apply {
+
+            tvGotoSignup.setOnClickListener {
+                Navigation.findNavController(view).navigate(R.id.goto_signupFragment)
+            }
+
+
+        }
+
     }
 
     override fun onDestroy() {
