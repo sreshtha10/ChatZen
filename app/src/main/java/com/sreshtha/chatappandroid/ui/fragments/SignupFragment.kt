@@ -69,7 +69,7 @@ class SignupFragment:Fragment(){
                     .addOnCompleteListener {
                         if(it.isSuccessful){
                             Log.d(TAG,"createUserWithEmail:Success")
-                            //(activity as MainActivity).startAnimationActivity()
+                            (activity as MainActivity).startHomeActivity()
                             Snackbar.make(view,"Account Created Successfully!",Snackbar.LENGTH_SHORT).show()
                         }
                         else{

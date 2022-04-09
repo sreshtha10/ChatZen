@@ -54,7 +54,7 @@ class LoginFragment:Fragment(){
                         if (it.isSuccessful) {
                             Log.d(TAG, "signInWithEmail:success")
                             Toast.makeText(activity,"Success!",Toast.LENGTH_SHORT).show()
-                            //(activity as MainActivity).startAnimationActivity()
+                            (activity as MainActivity).startHomeActivity()
                         } else {
                             Log.d(TAG, "signInWithEmail:failure")
                             Toast.makeText(activity,"Login Failed!",Toast.LENGTH_SHORT).show()
