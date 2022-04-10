@@ -96,6 +96,11 @@ class SignupFragment:Fragment(){
                         Color.parseColor("#21ec21"), BlendModeCompat.SRC_ATOP)
                 }
             }
+
+
+            btnLoginGoogle.setOnClickListener{
+                (activity as MainActivity).signInGoogle()
+            }
         }
     }
 

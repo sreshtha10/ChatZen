@@ -26,6 +26,19 @@ class MainActivity : AppCompatActivity() {
         const val TAG="MAIN_ACTIVITY"
     }
 
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == Activity.RESULT_OK){
+            Log.d(MainActivity.TAG,"Result OK")
+            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            try{
+                val account = task.result
+                firebaseAuthWithGoogle(account)
+            }
+            catch (e: ApiException){
+                Log.d(MainActivity.TAG,e.toString())
+            }
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +46,48 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         auth = FirebaseAuth.getInstance()
         setContentView(mainActivityBinding.root)
+        initGoogleClient()
 
     }
 
     fun startHomeActivity(){
         val intent = Intent(this,HomeActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun initGoogleClient(){
+        val gso = GoogleSignInOptions.Builder(
+            GoogleSignInOptions.DEFAULT_SIGN_IN
+        )
+            .requestIdToken(getString(R.string.web_client_id))
+            .requestEmail()
+            .build()
+        signInClient = GoogleSignIn.getClient(this,gso)
+    }
+
+    fun signInGoogle(){
+        val intent = signInClient?.signInIntent
+        resultLauncher.launch(intent)
+    }
+
+
+
+
+
+    private fun firebaseAuthWithGoogle(acc : GoogleSignInAccount){
+        Log.d(MainActivity.TAG,"firebaseWithGoogle Called")
+        val creds = GoogleAuthProvider.getCredential(acc.idToken,null)
+        FirebaseAuth.getInstance().signInWithCredential(creds)
+            .addOnSuccessListener {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                this.finish()
+                Log.d(LoginFragment.TAG,"google sign in:success")
+            }
+
+            .addOnFailureListener {
+                Log.d(LoginFragment.TAG,it.toString())
+            }
     }
 
 
