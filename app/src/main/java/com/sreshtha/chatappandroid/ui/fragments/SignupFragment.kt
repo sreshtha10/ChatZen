@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.FragmentSignupBinding
 import com.sreshtha.chatappandroid.ui.activities.MainActivity
