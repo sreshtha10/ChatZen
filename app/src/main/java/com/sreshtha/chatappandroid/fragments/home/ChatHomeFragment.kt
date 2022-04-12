@@ -1,4 +1,4 @@
-package com.sreshtha.chatappandroid.ui.fragments.home
+package com.sreshtha.chatappandroid.fragments.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

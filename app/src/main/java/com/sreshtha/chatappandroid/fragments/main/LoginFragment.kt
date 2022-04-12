@@ -1,4 +1,4 @@
-package com.sreshtha.chatappandroid.ui.fragments.main
+package com.sreshtha.chatappandroid.fragments.main
 
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.FragmentLoginBinding
-import com.sreshtha.chatappandroid.ui.activities.MainActivity
+import com.sreshtha.chatappandroid.activities.MainActivity
 
 class LoginFragment:Fragment(){
 

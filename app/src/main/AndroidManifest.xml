@@ -11,10 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatAppAndroid">
         <activity
-            android:name=".ui.activities.HomeActivity"
+            android:name="com.sreshtha.chatappandroid.activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name="com.sreshtha.chatappandroid.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

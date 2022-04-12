@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/chatHomeFragment"
-        android:name="com.sreshtha.chatappandroid.ui.fragments.home.ChatHomeFragment"
+        android:name="com.sreshtha.chatappandroid.fragments.home.ChatHomeFragment"
         android:label="ChatHomeFragment" >
         <action
             android:id="@+id/goto_settingsFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.sreshtha.chatappandroid.ui.fragments.home.SettingsFragment"
+        android:name="com.sreshtha.chatappandroid.fragments.home.SettingsFragment"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/goto_homeFragment"

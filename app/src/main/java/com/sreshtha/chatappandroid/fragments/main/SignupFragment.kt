@@ -1,4 +1,4 @@
-package com.sreshtha.chatappandroid.ui.fragments.main
+package com.sreshtha.chatappandroid.fragments.main
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,14 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.FragmentSignupBinding
-import com.sreshtha.chatappandroid.ui.activities.MainActivity
+import com.sreshtha.chatappandroid.activities.MainActivity
 import java.util.regex.Pattern
 
 class SignupFragment:Fragment(){

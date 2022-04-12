@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.sreshtha.chatappandroid.ui.fragments.main.SignupFragment"
+        android:name="com.sreshtha.chatappandroid.fragments.main.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.sreshtha.chatappandroid.ui.fragments.main.LoginFragment"
+        android:name="com.sreshtha.chatappandroid.fragments.main.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
