@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.ActivityHomeBinding
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
