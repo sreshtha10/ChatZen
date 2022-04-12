@@ -59,6 +59,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
     //bottom nav
     implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
+    //circular image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 
 

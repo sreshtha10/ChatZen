@@ -6,12 +6,14 @@
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/drawable/avd_home.xml" value="0.21" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/drawable/avd_settings.xml" value="0.21" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/drawable/btn_background.xml" value="0.2555" />
+        <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/drawable/circle.xml" value="0.1" />
+        <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/drawable/circular_image.xml" value="0.1" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/drawable/edit_text_background.xml" value="0.2555" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/activity_home.xml" value="0.3625" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/activity_main.xml" value="0.23541666666666666" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/fragment_chat_home.xml" value="0.1" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/fragment_login.xml" value="0.23541666666666666" />
-        <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/fragment_settings.xml" value="0.13703703703703704" />
+        <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/fragment_settings.xml" value="0.33" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/fragment_signup.xml" value="0.23541666666666666" />
       </map>
     </option>
