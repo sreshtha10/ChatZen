@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.ActivityHomeBinding
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
@@ -16,7 +18,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
-        val viewModelFactory = HomeViewModelFactory(application)
+        val viewModelFactory = HomeViewModelFactory(application,FirebaseAuth.getInstance().currentUser!!)
         viewModel = ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
         setContentView(homeBinding.root)
 
