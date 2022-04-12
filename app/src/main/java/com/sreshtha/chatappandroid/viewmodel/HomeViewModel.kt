@@ -5,13 +5,16 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.lifecycle.AndroidViewModel
+import com.google.firebase.auth.FirebaseUser
 import com.sreshtha.chatappandroid.ChatAppAndroid
 
 class HomeViewModel(
-    val app:Application
+    val app:Application,
+    val user:FirebaseUser
 ):AndroidViewModel(app) {
 
 
+    val currentUser = this.user
 
     fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<ChatAppAndroid>().getSystemService(
