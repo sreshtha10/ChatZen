@@ -4,22 +4,30 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
-import com.sreshtha.chatappandroid.databinding.FragmentSettingsBinding
 import com.sreshtha.chatappandroid.activities.HomeActivity
 import com.sreshtha.chatappandroid.activities.MainActivity
+import com.sreshtha.chatappandroid.databinding.FragmentSettingsBinding
 import com.sreshtha.chatappandroid.util.Constants
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 class SettingsFragment:Fragment() {
     private var settingsBinding:FragmentSettingsBinding?=null
@@ -39,7 +47,12 @@ class SettingsFragment:Fragment() {
 
     private val readExternalLauncher = registerForActivityResult(ActivityResultContracts.GetContent()){
         if(it!=null){
-            //upload image
+            //add image to image view
+            settingsBinding?.profileImage?.let { it1 -> Glide.with(this).asDrawable().load(it).into(it1) }
+            // todo add image to cloud
+            settingsBinding?.dotLoader?.visibility = View.VISIBLE
+            val bitmap =  ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, it))
+            uploadToCloud(bitmap)
             Log.d(TAG,it.toString())
         }
     }
@@ -88,6 +101,7 @@ class SettingsFragment:Fragment() {
                     //openGallery
                     openGallery()
 
+
                 }
                 else{
                     permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -117,5 +131,48 @@ class SettingsFragment:Fragment() {
     private fun openGallery(){
         readExternalLauncher.launch("image/*")
 
+    }
+
+    private fun uploadToCloud(bitmap:Bitmap){
+        if(!mViewModel.hasInternetConnection()){
+            //todo toast
+            return
+        }
+        val userRef = storage.reference.child("$USER_IMAGE/${mViewModel.currentUser.email}/")
+
+        //val bitmap  = (settingsBinding?.profileImage?.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos)
+        val data = baos.toByteArray()
+
+        lifecycleScope.launch(Dispatchers.IO){
+            val uploadTask = userRef.putBytes(data)
+            uploadTask.addOnFailureListener{
+                settingsBinding?.dotLoader?.visibility = View.GONE
+                Log.d(TAG,it.toString())
+            }
+            uploadTask.addOnSuccessListener {
+                getUrlFromCloud()
+                settingsBinding?.dotLoader?.visibility = View.GONE
+                Log.d(TAG,"file upload:success")
+            }
+        }
+    }
+
+
+    private fun getUrlFromCloud(){
+        val userRef = storage.reference.child("$USER_IMAGE/${mViewModel.currentUser.email}/")
+        lifecycleScope.launch(Dispatchers.IO){
+            userRef.downloadUrl
+                .addOnSuccessListener {
+                    val profileUpdates = UserProfileChangeRequest.Builder().setPhotoUri(it).build()
+                    mViewModel.currentUser.updateProfile(profileUpdates)
+                    Toast.makeText(activity,"Profile Picture Updated!",Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(activity,"Cannot Update Profile Picture!",Toast.LENGTH_SHORT).show()
+                    Log.d(TAG,it.toString())
+                }
+        }
     }
 }

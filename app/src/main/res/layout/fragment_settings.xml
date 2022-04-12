@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     android:background="@color/bgColor">
 
+    <com.bhargavms.dotloader.DotLoader
+        android:id="@+id/dot_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:visibility="invisible"
+        app:color_array="@array/dot_colors"
+        app:dot_radius="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_logout"
+        app:number_of_dots="3" />
+
     <LinearLayout
-        android:layout_marginTop="8dp"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -26,9 +40,9 @@
             android:src="@drawable/ic_dummy_profile" />
 
         <LinearLayout
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="3"
             android:orientation="vertical">
 
@@ -57,14 +71,14 @@
 
 
     <LinearLayout
-        android:padding="6dp"
-        android:background="@drawable/edit_text_background"
-        android:layout_marginHorizontal="22dp"
         android:id="@+id/ll_change_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="22dp"
         android:layout_marginTop="64dp"
+        android:background="@drawable/edit_text_background"
         android:orientation="horizontal"
+        android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,8 +97,8 @@
 
         <ImageView
             android:layout_width="32dp"
-            android:layout_gravity="end"
             android:layout_height="44dp"
+            android:layout_gravity="end"
             android:layout_weight="1"
             android:src="@drawable/ic_change_nickname" />
 
@@ -92,14 +106,14 @@
 
 
     <LinearLayout
-        android:padding="6dp"
-        android:background="@drawable/edit_text_background"
-        android:layout_marginTop="32dp"
-        android:layout_marginHorizontal="22dp"
         android:id="@+id/ll_change_profile_pic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edit_text_background"
         android:orientation="horizontal"
+        android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,22 +132,22 @@
 
         <ImageView
             android:layout_width="44dp"
-            android:layout_gravity="end"
             android:layout_height="44dp"
+            android:layout_gravity="end"
             android:layout_weight="1"
             android:src="@drawable/ic_change_profile_pic" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginHorizontal="22dp"
-        android:layout_marginTop="32dp"
         android:id="@+id/ll_logout"
-        android:padding="6dp"
-        android:background="@drawable/edit_text_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edit_text_background"
         android:orientation="horizontal"
+        android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,14 +174,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:padding="6dp"
-        android:background="@drawable/edit_text_background"
-        android:layout_marginHorizontal="22dp"
-        android:layout_marginTop="32dp"
         android:id="@+id/ll_invite_friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edit_text_background"
         android:orientation="horizontal"
+        android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

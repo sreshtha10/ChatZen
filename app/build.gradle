@@ -68,6 +68,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
     //firebase storage
     implementation 'com.google.firebase:firebase-storage'
+    //loading bar
+    implementation 'com.github.bhargavms:DotLoader:1.1.1'
 
 
 
