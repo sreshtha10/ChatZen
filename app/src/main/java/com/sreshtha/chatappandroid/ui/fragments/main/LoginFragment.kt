@@ -1,4 +1,4 @@
-package com.sreshtha.chatappandroid.ui.fragments
+package com.sreshtha.chatappandroid.ui.fragments.main
 
 import android.os.Bundle
 import android.util.Log

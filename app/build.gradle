@@ -57,6 +57,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     //google play services
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
+    //bottom nav
+    implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
+
 
 
 }

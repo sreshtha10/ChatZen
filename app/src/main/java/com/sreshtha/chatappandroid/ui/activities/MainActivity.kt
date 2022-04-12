@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.ActivityMainBinding
-import com.sreshtha.chatappandroid.ui.fragments.LoginFragment
+import com.sreshtha.chatappandroid.ui.fragments.main.LoginFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainActivityBinding :ActivityMainBinding

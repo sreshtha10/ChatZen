@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/chatHomeFragment">
+
+    <fragment
+        android:id="@+id/chatHomeFragment"
+        android:name="com.sreshtha.chatappandroid.ui.fragments.home.ChatHomeFragment"
+        android:label="ChatHomeFragment" >
+        <action
+            android:id="@+id/goto_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.sreshtha.chatappandroid.ui.fragments.home.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/goto_homeFragment"
+            app:destination="@id/chatHomeFragment" />
+    </fragment>
+</navigation>

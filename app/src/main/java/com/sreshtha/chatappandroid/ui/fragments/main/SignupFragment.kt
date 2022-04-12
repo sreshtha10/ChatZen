@@ -1,4 +1,4 @@
-package com.sreshtha.chatappandroid.ui.fragments
+package com.sreshtha.chatappandroid.ui.fragments.main
 
 import android.graphics.Color
 import android.os.Bundle

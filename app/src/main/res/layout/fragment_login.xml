@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgColor"
-    tools:context=".ui.fragments.LoginFragment">
+    tools:context=".ui.fragments.main.LoginFragment">
 
     <TextView
         android:id="@+id/textView"
@@ -125,5 +125,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_google" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
