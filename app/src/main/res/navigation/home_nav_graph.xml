@@ -10,7 +10,9 @@
         android:label="ChatHomeFragment" >
         <action
             android:id="@+id/goto_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/overshoot_interpolator"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -18,6 +20,8 @@
         android:label="SettingsFragment" >
         <action
             android:id="@+id/goto_homeFragment"
-            app:destination="@id/chatHomeFragment" />
+            app:destination="@id/chatHomeFragment"
+            app:enterAnim="@android:anim/overshoot_interpolator"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 </navigation>

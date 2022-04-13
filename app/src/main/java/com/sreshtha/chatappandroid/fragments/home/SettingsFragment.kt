@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -117,6 +118,12 @@ class SettingsFragment:Fragment() {
 
             llChangeNickname.setOnClickListener {
                 displayCustomAlert()
+            }
+
+
+            ivGithub.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GITHUB_URL))
+                startActivity(intent)
             }
 
         }
