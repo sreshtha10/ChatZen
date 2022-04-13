@@ -5,11 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
+
+/*
+Schema for chat app:
+1. Sender side - user1/receiver/messages
+2. Receiver side - user2/sender/messages
+ */
+
+
+
+
 
 class ChatHomeFragment:Fragment() {
     private var chatHomeBinding:FragmentChatHomeBinding?=null
+    private val db = Firebase.firestore
 
+    companion object{
+        const val TAG = "CHAT_HOME_FRAGMENT"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
