@@ -12,8 +12,10 @@ import com.sreshtha.chatappandroid.viewmodel.HomeViewModelFactory
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 
 class HomeActivity : AppCompatActivity() {
+
     private lateinit var homeBinding: ActivityHomeBinding
     lateinit var viewModel:HomeViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
