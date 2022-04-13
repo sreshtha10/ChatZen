@@ -234,4 +234,6 @@ class SettingsFragment:Fragment() {
             Glide.with(view).load(mViewModel.currentUser.photoUrl).into(profileImage)
         }
     }
+
+
 }

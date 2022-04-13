@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import androidx.lifecycle.AndroidViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.sreshtha.chatappandroid.ChatAppAndroid
+import com.sreshtha.chatappandroid.model.Message
 
 class HomeViewModel(
     val app:Application,
@@ -30,6 +31,15 @@ class HomeViewModel(
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
             else -> return false
         }
+    }
+
+
+    fun getMessageHash(message: Message):Map<String,String>{
+        return mapOf<String,String>(
+            "description" to message.description,
+            "timeStamp" to message.timeStamp,
+            "isCurrentUserSender" to message.isCurrentUserSender.toString()
+        )
     }
 
 }
