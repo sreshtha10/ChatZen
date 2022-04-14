@@ -56,14 +56,24 @@ class ChatHomeFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //TODO fetch all the chats which are initiated
-        /*db.collection("${Constants.CHAT_REF}/${FirebaseAuth.getInstance().currentUser!!}").get()
+        db.collection(FirebaseAuth.getInstance().currentUser!!.email.toString()).get()
             .addOnFailureListener {
                 Log.d(TAG,it.toString())
             }
             .addOnSuccessListener {
+                val docs = it.documents
+                if(docs.isEmpty()){
+                    return@addOnSuccessListener
+                }
+
+                val newList = mutableListOf<Receiver>()
+                docs.forEach {
+                    Log.d(TAG,it.id)
+                    getReceiverForEmail(it.id)
+                }
+                adapter.differ.submitList(newList)
                 Log.d(TAG,"fetching all collections :success")
             }
-*/
 
         chatHomeBinding?.apply {
             ivAddFriend.setOnClickListener {
@@ -230,6 +240,20 @@ class ChatHomeFragment:Fragment() {
                     adapter.differ.currentList.forEach { newList.add(it) }
                     newList.add(receiver)
                     adapter.differ.submitList(newList)
+                }
+        }
+    }
+
+
+    private fun getReceiverForEmail(email: String) {
+        val userRef = storage.reference.child("${SettingsFragment.USER_IMAGE}/${email}/")
+        lifecycleScope.launch(Dispatchers.IO) {
+            userRef.downloadUrl
+                .addOnFailureListener {
+                    
+                }
+                .addOnSuccessListener {
+
                 }
         }
     }
