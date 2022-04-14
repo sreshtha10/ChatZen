@@ -229,8 +229,18 @@ class SettingsFragment:Fragment() {
 
     private fun initValues(view: View){
         settingsBinding?.apply {
+            val nickname = mViewModel.currentUser.email?.split("@")?.get(0)
+            lifecycleScope.launch {
+
+                if(mViewModel.currentUser.displayName.isNullOrEmpty()){
+                    val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
+                    mViewModel.currentUser.updateProfile(profileUpdates)
+                }
+
+                tvUserName.text = mViewModel.currentUser.displayName
+            }
             tvUserEmail.text = mViewModel.currentUser.email
-            tvUserName.text = mViewModel.currentUser.displayName
+
             Glide.with(view).load(mViewModel.currentUser.photoUrl).into(profileImage)
         }
     }

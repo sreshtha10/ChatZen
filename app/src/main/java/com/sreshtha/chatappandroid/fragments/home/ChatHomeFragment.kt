@@ -55,6 +55,10 @@ class ChatHomeFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO fetch all the chats which are initiated
+
+
+
         chatHomeBinding?.apply {
             ivAddFriend.setOnClickListener {
                 //create sender side chat
@@ -123,9 +127,27 @@ class ChatHomeFragment:Fragment() {
                 when {
                     doesUserExist -> {
                         //TODO check if chat exists or not.
-                        createChat(msg,email)
+                        db.collection("${Constants.CHAT_REF}/${FirebaseAuth.getInstance().currentUser!!.email}/${email}")
+                            .get()
+                            .addOnFailureListener {
+                                createChat(msg,email)
+                                Log.d(TAG,"chat created! as a result of failure")
+                                Log.d(TAG,it.toString())
+                            }
+                            .addOnSuccessListener {
+                                // chat already exists
+                                Log.d(TAG,it.documents.size.toString())
+                                if(it.documents.size >=1 ){
+                                    Log.d(TAG,"chat already exists"+ it.toString())
+                                }
+                                else{
+                                    createChat(msg,email)
+                                    Log.d(TAG,"chat created!")
+                                }
+
+                            }
+
                         createReceiver(email)
-                        //todo add to recycler view
 
 
                     }
