@@ -11,7 +11,7 @@
         android:name=".ChatAppAndroid"
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ChatAppAndroid">
+        android:theme="@style/SplashScreenTheme">
         <activity
             android:name="com.sreshtha.chatappandroid.activities.HomeActivity"
             android:exported="false" />

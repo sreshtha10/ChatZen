@@ -14,8 +14,8 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sreshtha.chatappandroid.R
-import com.sreshtha.chatappandroid.databinding.FragmentSignupBinding
 import com.sreshtha.chatappandroid.activities.MainActivity
+import com.sreshtha.chatappandroid.databinding.FragmentSignupBinding
 import java.util.regex.Pattern
 
 class SignupFragment:Fragment(){
@@ -69,6 +69,7 @@ class SignupFragment:Fragment(){
                         if(it.isSuccessful){
                             Log.d(TAG,"createUserWithEmail:Success")
                             (activity as MainActivity).startHomeActivity()
+                            (activity as MainActivity).addUserToFireStore(etEmail.text.toString(),etEmail.text.toString())
                             Snackbar.make(view,"Account Created Successfully!",Snackbar.LENGTH_SHORT).show()
                         }
                         else{
@@ -137,4 +138,7 @@ class SignupFragment:Fragment(){
             }
         }
     }
+
+
+
 }

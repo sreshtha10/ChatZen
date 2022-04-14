@@ -116,4 +116,8 @@ class ChatHomeFragment:Fragment() {
             }
     }
 
+
+    private fun initRecyclerView(){
+
+    }
 }

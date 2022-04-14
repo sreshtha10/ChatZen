@@ -21,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         val viewModelFactory = HomeViewModelFactory(application,FirebaseAuth.getInstance().currentUser!!)
         viewModel = ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
+        setTheme(R.style.Theme_ChatAppAndroid)
         setContentView(homeBinding.root)
 
         homeBinding.apply {
