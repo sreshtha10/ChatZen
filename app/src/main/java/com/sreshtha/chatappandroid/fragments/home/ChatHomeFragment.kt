@@ -56,8 +56,14 @@ class ChatHomeFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //TODO fetch all the chats which are initiated
-
-
+        /*db.collection("${Constants.CHAT_REF}/${FirebaseAuth.getInstance().currentUser!!}").get()
+            .addOnFailureListener {
+                Log.d(TAG,it.toString())
+            }
+            .addOnSuccessListener {
+                Log.d(TAG,"fetching all collections :success")
+            }
+*/
 
         chatHomeBinding?.apply {
             ivAddFriend.setOnClickListener {
@@ -127,8 +133,7 @@ class ChatHomeFragment:Fragment() {
                 when {
                     doesUserExist -> {
                         //TODO check if chat exists or not.
-                        db.collection("${Constants.CHAT_REF}/${FirebaseAuth.getInstance().currentUser!!.email}/${email}")
-                            .get()
+                        db.collection("${FirebaseAuth.getInstance().currentUser!!.email}").document(email).get()
                             .addOnFailureListener {
                                 createChat(msg,email)
                                 Log.d(TAG,"chat created! as a result of failure")
@@ -136,8 +141,8 @@ class ChatHomeFragment:Fragment() {
                             }
                             .addOnSuccessListener {
                                 // chat already exists
-                                Log.d(TAG,it.documents.size.toString())
-                                if(it.documents.size >=1 ){
+                                Log.d(TAG,it.toString())
+                                if(it.data != null ){
                                     Log.d(TAG,"chat already exists"+ it.toString())
                                 }
                                 else{
@@ -180,8 +185,7 @@ class ChatHomeFragment:Fragment() {
 
     private fun createChat(msg:Message,email: String){
         //for sender side
-        db.collection("${Constants.CHAT_REF}/${(activity as HomeActivity).viewModel.currentUser.email.toString()}/${email}")
-            .add(msg)
+        db.collection((activity as HomeActivity).viewModel.currentUser.email.toString()).document(email).set(msg)
             .addOnFailureListener {
                 //todo toast
                 Log.d(TAG,it.toString())
@@ -192,8 +196,7 @@ class ChatHomeFragment:Fragment() {
             }
 
         //for reciever side
-        db.collection("${Constants.CHAT_REF}/${email}/${(activity as HomeActivity).viewModel.currentUser.email.toString()}")
-            .add(msg)
+        db.collection(email).document((activity as HomeActivity).viewModel.currentUser.email.toString()).set(msg)
             .addOnFailureListener {
                 //todo toast
                 Log.d(TAG,it.toString())
@@ -230,7 +233,5 @@ class ChatHomeFragment:Fragment() {
                 }
         }
     }
-
-
 
 }
