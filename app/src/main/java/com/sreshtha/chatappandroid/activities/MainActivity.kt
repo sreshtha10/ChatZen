@@ -91,8 +91,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(acc : GoogleSignInAccount){
         Log.d(MainActivity.TAG,"firebaseWithGoogle Called")
-        val credential = GoogleAuthProvider.getCredential(acc.idToken,null)
-        FirebaseAuth.getInstance().signInWithCredential(credential)
+        val creds = GoogleAuthProvider.getCredential(acc.idToken,null)
+        FirebaseAuth.getInstance().signInWithCredential(creds)
             .addOnSuccessListener {
 
                lifecycleScope.launch {
