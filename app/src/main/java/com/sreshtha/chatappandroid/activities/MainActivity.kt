@@ -21,6 +21,7 @@ import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.ActivityMainBinding
 import com.sreshtha.chatappandroid.fragments.main.LoginFragment
 import com.sreshtha.chatappandroid.fragments.main.SignupFragment
+import com.sreshtha.chatappandroid.util.Constants
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         const val TAG="MAIN_ACTIVITY"
     }
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK){
             Log.d(MainActivity.TAG,"Result OK")
             val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 firebaseAuthWithGoogle(account)
             }
             catch (e: ApiException){
-                Log.d(MainActivity.TAG,e.toString())
+                Log.d(TAG,e.toString())
             }
         }
     }
@@ -90,8 +91,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(acc : GoogleSignInAccount){
         Log.d(MainActivity.TAG,"firebaseWithGoogle Called")
-        val creds = GoogleAuthProvider.getCredential(acc.idToken,null)
-        FirebaseAuth.getInstance().signInWithCredential(creds)
+        val credential = GoogleAuthProvider.getCredential(acc.idToken,null)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnSuccessListener {
 
                lifecycleScope.launch {
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addUserToFireStore(email: String, name:String){
-        db.collection("users").document("auth_user_email").set(
+        db.collection(Constants.USER_REF).document(Constants.USERS_DOC).set(
             mapOf(email to  name ),
             SetOptions.merge()
         )

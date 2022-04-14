@@ -17,6 +17,7 @@ import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.activities.HomeActivity
 import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
 import com.sreshtha.chatappandroid.model.Message
+import com.sreshtha.chatappandroid.util.Constants
 
 /*
 Schema for chat app:
@@ -104,7 +105,16 @@ class ChatHomeFragment:Fragment() {
 
     private fun initChat(email:String){
         val msg = Message("INIT","-1",true)
-        db.collection("chat/${(activity as HomeActivity).viewModel.currentUser.email.toString()}/${email}")
+
+        // TODO check if user exists or not
+
+
+        //TODO check if chat exists or not.
+
+
+
+        //for sender side
+        db.collection("${Constants.CHAT_REF}/${(activity as HomeActivity).viewModel.currentUser.email.toString()}/${email}")
             .add(msg)
             .addOnFailureListener {
                 //todo toast
@@ -114,6 +124,19 @@ class ChatHomeFragment:Fragment() {
                 //todo toast
                 Log.d(TAG,"add friend:success")
             }
+
+        //for reciever side
+        db.collection("${Constants.CHAT_REF}/${email}/${(activity as HomeActivity).viewModel.currentUser.email.toString()}")
+            .add(msg)
+            .addOnFailureListener {
+                //todo toast
+                Log.d(TAG,it.toString())
+            }
+            .addOnSuccessListener {
+                //todo toast
+                Log.d(TAG,"add friend:success")
+            }
+
     }
 
 
