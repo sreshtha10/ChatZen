@@ -14,13 +14,14 @@ import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeBinding: ActivityHomeBinding
-    lateinit var viewModel:HomeViewModel
+    lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
-        val viewModelFactory = HomeViewModelFactory(application,FirebaseAuth.getInstance().currentUser!!)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
+        val viewModelFactory =
+            HomeViewModelFactory(application, FirebaseAuth.getInstance().currentUser!!)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         setTheme(R.style.Theme_ChatAppAndroid)
         setContentView(homeBinding.root)
 
@@ -38,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
                 ),
             )
 
-            bottomNavView.setMenuItems(menuItems,0)
+            bottomNavView.setMenuItems(menuItems, 0)
             val navController = findNavController(R.id.fragmentContainerView2)
             bottomNavView.setupWithNavController(navController)
         }

@@ -11,17 +11,16 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sreshtha.chatappandroid.R
-import com.sreshtha.chatappandroid.databinding.FragmentLoginBinding
 import com.sreshtha.chatappandroid.activities.MainActivity
+import com.sreshtha.chatappandroid.databinding.FragmentLoginBinding
 
-class LoginFragment:Fragment(){
+class LoginFragment : Fragment() {
 
-    private var loginBinding: FragmentLoginBinding?=null
+    private var loginBinding: FragmentLoginBinding? = null
 
-    companion object{
+    companion object {
         const val TAG = "LOGIN_FRAGMENT"
     }
-
 
 
     override fun onCreateView(
@@ -29,7 +28,7 @@ class LoginFragment:Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        loginBinding = FragmentLoginBinding.inflate(inflater,container,false)
+        loginBinding = FragmentLoginBinding.inflate(inflater, container, false)
 
         return loginBinding?.root
     }
@@ -45,27 +44,27 @@ class LoginFragment:Fragment(){
 
             btnLogin.setOnClickListener {
 
-                if(etEmail.text.isEmpty()|| etPassword.text.isEmpty()){
-                    Snackbar.make(view,"Empty Fields Not Allowed!",Snackbar.LENGTH_SHORT).show()
+                if (etEmail.text.isEmpty() || etPassword.text.isEmpty()) {
+                    Snackbar.make(view, "Empty Fields Not Allowed!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 val auth = FirebaseAuth.getInstance()
-                auth.signInWithEmailAndPassword(etEmail.text.toString(),etPassword.text.toString())
+                auth.signInWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             Log.d(TAG, "signInWithEmail:success")
-                            Toast.makeText(activity,"Success!",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "Success!", Toast.LENGTH_SHORT).show()
                             (activity as MainActivity).startHomeActivity()
                         } else {
                             Log.d(TAG, "signInWithEmail:failure")
-                            Toast.makeText(activity,"Login Failed!",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "Login Failed!", Toast.LENGTH_SHORT).show()
                         }
                     }
             }
 
             btnLoginGoogle.setOnClickListener {
                 (activity as MainActivity).signInGoogle()
-                Log.d(TAG,"login to google clicked!")
+                Log.d(TAG, "login to google clicked!")
             }
 
         }
@@ -76,11 +75,6 @@ class LoginFragment:Fragment(){
         super.onDestroy()
         loginBinding = null
     }
-
-
-
-
-
 
 
 }

@@ -10,9 +10,9 @@ import com.sreshtha.chatappandroid.ChatAppAndroid
 import com.sreshtha.chatappandroid.model.Message
 
 class HomeViewModel(
-    val app:Application,
-    val user:FirebaseUser
-):AndroidViewModel(app) {
+    val app: Application,
+    val user: FirebaseUser
+) : AndroidViewModel(app) {
 
 
     val currentUser = this.user
@@ -34,8 +34,8 @@ class HomeViewModel(
     }
 
 
-    fun getMessageHash(message: Message):Map<String,String>{
-        return mapOf<String,String>(
+    fun getMessageHash(message: Message): Map<String, String> {
+        return mapOf<String, String>(
             "description" to message.description,
             "timeStamp" to message.timeStamp,
             "isCurrentUserSender" to message.isCurrentUserSender.toString()

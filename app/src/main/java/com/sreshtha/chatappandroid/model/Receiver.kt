@@ -5,5 +5,5 @@ import android.net.Uri
 class Receiver(
     val email:String,
     val nickname:String,
-    val photoUrl:Uri?
+    var photoUrl:Uri?
 )

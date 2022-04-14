@@ -18,9 +18,10 @@ import com.sreshtha.chatappandroid.activities.MainActivity
 import com.sreshtha.chatappandroid.databinding.FragmentSignupBinding
 import java.util.regex.Pattern
 
-class SignupFragment:Fragment(){
-    private var signupBinding:FragmentSignupBinding?=null
-    companion object{
+class SignupFragment : Fragment() {
+    private var signupBinding: FragmentSignupBinding? = null
+
+    companion object {
         const val TAG = "SIGNUP_FRAGMENT"
     }
 
@@ -29,7 +30,7 @@ class SignupFragment:Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        signupBinding = FragmentSignupBinding.inflate(inflater,container,false)
+        signupBinding = FragmentSignupBinding.inflate(inflater, container, false)
         return signupBinding?.root
     }
 
@@ -46,35 +47,45 @@ class SignupFragment:Fragment(){
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
                 val confirmPass = etConfirmPassword.text.toString()
-                if(email.isEmpty() || password.isEmpty() || confirmPass.isEmpty()){
-                    Snackbar.make(view,"Empty Fields not allowed!",Snackbar.LENGTH_SHORT).show()
+                if (email.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
+                    Snackbar.make(view, "Empty Fields not allowed!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                if(!isValidEmail(email)){
-                    Snackbar.make(view,"Invalid Email!",Snackbar.LENGTH_SHORT).show()
+                if (!isValidEmail(email)) {
+                    Snackbar.make(view, "Invalid Email!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                if(password!=confirmPass){
-                    Snackbar.make(view,"Passwords do not match!",Snackbar.LENGTH_SHORT).show()
+                if (password != confirmPass) {
+                    Snackbar.make(view, "Passwords do not match!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                if(passwordStrength(password)<2){
-                    Snackbar.make(view,"Password is too weak!",Snackbar.LENGTH_SHORT).show()
+                if (passwordStrength(password) < 2) {
+                    Snackbar.make(view, "Password is too weak!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 val auth = FirebaseAuth.getInstance()
-                auth.createUserWithEmailAndPassword(etEmail.text.toString(),etPassword.text.toString())
+                auth.createUserWithEmailAndPassword(
+                    etEmail.text.toString(),
+                    etPassword.text.toString()
+                )
                     .addOnCompleteListener {
-                        if(it.isSuccessful){
-                            Log.d(TAG,"createUserWithEmail:Success")
+                        if (it.isSuccessful) {
+                            Log.d(TAG, "createUserWithEmail:Success")
                             (activity as MainActivity).startHomeActivity()
-                            (activity as MainActivity).addUserToFireStore(etEmail.text.toString(),etEmail.text.toString())
-                            Snackbar.make(view,"Account Created Successfully!",Snackbar.LENGTH_SHORT).show()
-                        }
-                        else{
-                            Log.d(TAG,"createUserWithEmail:Failure ${it.exception}")
-                            Snackbar.make(view,"Cannot Create Account!",Snackbar.LENGTH_SHORT).show()
+                            (activity as MainActivity).addUserToFireStore(
+                                etEmail.text.toString(),
+                                etEmail.text.toString()
+                            )
+                            Snackbar.make(
+                                view,
+                                "Account Created Successfully!",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Log.d(TAG, "createUserWithEmail:Failure ${it.exception}")
+                            Snackbar.make(view, "Cannot Create Account!", Snackbar.LENGTH_SHORT)
+                                .show()
                         }
                     }
 
@@ -84,22 +95,26 @@ class SignupFragment:Fragment(){
             etPassword.addTextChangedListener {
                 val strength = passwordStrength(it.toString())
                 progressBar.progress = strength
-                if(strength<2 || (it.toString() != signupBinding!!.etConfirmPassword.text.toString() && signupBinding!!.etConfirmPassword.text.isNotEmpty())){
-                    progressBar.progressDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                        Color.parseColor("#FF0000"), BlendModeCompat.SRC_ATOP)
-                }
-                else if(strength<4){
-                    progressBar.progressDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                        Color.parseColor("#Ecb721"), BlendModeCompat.SRC_ATOP)
-                }
-                else{
-                    progressBar.progressDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                        Color.parseColor("#21ec21"), BlendModeCompat.SRC_ATOP)
+                if (strength < 2 || (it.toString() != signupBinding!!.etConfirmPassword.text.toString() && signupBinding!!.etConfirmPassword.text.isNotEmpty())) {
+                    progressBar.progressDrawable.colorFilter =
+                        BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                            Color.parseColor("#FF0000"), BlendModeCompat.SRC_ATOP
+                        )
+                } else if (strength < 4) {
+                    progressBar.progressDrawable.colorFilter =
+                        BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                            Color.parseColor("#Ecb721"), BlendModeCompat.SRC_ATOP
+                        )
+                } else {
+                    progressBar.progressDrawable.colorFilter =
+                        BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                            Color.parseColor("#21ec21"), BlendModeCompat.SRC_ATOP
+                        )
                 }
             }
 
 
-            btnLoginGoogle.setOnClickListener{
+            btnLoginGoogle.setOnClickListener {
                 (activity as MainActivity).signInGoogle()
             }
         }
@@ -107,30 +122,30 @@ class SignupFragment:Fragment(){
 
     override fun onDestroy() {
         super.onDestroy()
-        signupBinding =null
+        signupBinding = null
     }
 
-    private fun isValidEmail(email:String):Boolean{
-        val pattern  = Pattern.compile(".+@.+\\.[a-z]+")
+    private fun isValidEmail(email: String): Boolean {
+        val pattern = Pattern.compile(".+@.+\\.[a-z]+")
         val matcher = pattern.matcher(email)
         return matcher.matches()
     }
 
-    private fun passwordStrength(password:String):Int{
+    private fun passwordStrength(password: String): Int {
         when {
             password.isEmpty() -> {
                 return 0
             }
-            password.length<4 -> {
+            password.length < 4 -> {
                 return 1
             }
-            password.length<6 -> {
+            password.length < 6 -> {
                 return 2
             }
-            password.length<8 -> {
+            password.length < 8 -> {
                 return 3
             }
-            password.length<10 -> {
+            password.length < 10 -> {
                 return 4
             }
             else -> {
@@ -138,7 +153,6 @@ class SignupFragment:Fragment(){
             }
         }
     }
-
 
 
 }

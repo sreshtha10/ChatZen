@@ -35,41 +35,45 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
-class SettingsFragment:Fragment() {
-    private var settingsBinding:FragmentSettingsBinding?=null
-    private lateinit var mViewModel:HomeViewModel
+class SettingsFragment : Fragment() {
+    private var settingsBinding: FragmentSettingsBinding? = null
+    private lateinit var mViewModel: HomeViewModel
     private val storage = FirebaseStorage.getInstance(Constants.CLOUD_URL)
 
 
-
-
-
-    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
-        if(it==true){
-            //launch gallery intent
-            openGallery()
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it == true) {
+                //launch gallery intent
+                openGallery()
+            }
         }
-    }
 
-    private val readExternalLauncher = registerForActivityResult(ActivityResultContracts.GetContent()){
-        if(it!=null){
-            //add image to image view
-            settingsBinding?.profileImage?.let { it1 -> Glide.with(this).asDrawable().load(it).into(it1) }
-            // todo add image to cloud
-            settingsBinding?.dotLoader?.visibility = View.VISIBLE
-            val bitmap =  ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, it))
-            uploadToCloud(bitmap)
-            Log.d(TAG,it.toString())
+    private val readExternalLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
+            if (it != null) {
+                //add image to image view
+                settingsBinding?.profileImage?.let { it1 ->
+                    Glide.with(this).asDrawable().load(it).into(it1)
+                }
+                // todo add image to cloud
+                settingsBinding?.dotLoader?.visibility = View.VISIBLE
+                val bitmap = ImageDecoder.decodeBitmap(
+                    ImageDecoder.createSource(
+                        requireContext().contentResolver,
+                        it
+                    )
+                )
+                uploadToCloud(bitmap)
+                Log.d(TAG, it.toString())
+            }
         }
-    }
 
 
-
-
-    companion object{
+    companion object {
         const val TAG = "SETTINGS_FRAGMENT"
-        const val USER_SETTINGS="user_settings"
-        const val USER_IMAGE="user_image"
+        const val USER_SETTINGS = "user_settings"
+        const val USER_IMAGE = "user_image"
     }
 
     override fun onCreateView(
@@ -77,7 +81,7 @@ class SettingsFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        settingsBinding= FragmentSettingsBinding.inflate(inflater,container,false)
+        settingsBinding = FragmentSettingsBinding.inflate(inflater, container, false)
         mViewModel = (activity as HomeActivity).viewModel
         return settingsBinding?.root
     }
@@ -92,24 +96,23 @@ class SettingsFragment:Fragment() {
 
             llLogout.setOnClickListener {
                 FirebaseAuth.getInstance().signOut()
-                val intent = Intent(activity as HomeActivity,MainActivity::class.java)
+                val intent = Intent(activity as HomeActivity, MainActivity::class.java)
                 startActivity(intent)
                 (activity)?.finish()
             }
 
 
             llChangeProfilePic.setOnClickListener {
-                if(!mViewModel.hasInternetConnection()){
+                if (!mViewModel.hasInternetConnection()) {
                     //todo toast
                     return@setOnClickListener
                 }
-                if(hasReadExternalStoragePermission(activity as HomeActivity)){
+                if (hasReadExternalStoragePermission(activity as HomeActivity)) {
                     //openGallery
                     openGallery()
 
 
-                }
-                else{
+                } else {
                     permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
 
@@ -136,19 +139,21 @@ class SettingsFragment:Fragment() {
     }
 
 
-
-    private fun hasReadExternalStoragePermission(context: Context):Boolean{
-        return ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    private fun hasReadExternalStoragePermission(context: Context): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
 
-    private fun openGallery(){
+    private fun openGallery() {
         readExternalLauncher.launch("image/*")
 
     }
 
-    private fun uploadToCloud(bitmap:Bitmap){
-        if(!mViewModel.hasInternetConnection()){
+    private fun uploadToCloud(bitmap: Bitmap) {
+        if (!mViewModel.hasInternetConnection()) {
             //todo toast
             return
         }
@@ -156,42 +161,43 @@ class SettingsFragment:Fragment() {
 
         //val bitmap  = (settingsBinding?.profileImage?.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
-        lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
             val uploadTask = userRef.putBytes(data)
-            uploadTask.addOnFailureListener{
+            uploadTask.addOnFailureListener {
                 settingsBinding?.dotLoader?.visibility = View.GONE
-                Log.d(TAG,it.toString())
+                Log.d(TAG, it.toString())
             }
             uploadTask.addOnSuccessListener {
                 getUrlFromCloud()
                 settingsBinding?.dotLoader?.visibility = View.GONE
-                Log.d(TAG,"file upload:success")
+                Log.d(TAG, "file upload:success")
             }
         }
     }
 
 
-    private fun getUrlFromCloud(){
+    private fun getUrlFromCloud() {
         val userRef = storage.reference.child("$USER_IMAGE/${mViewModel.currentUser.email}/")
-        lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
             userRef.downloadUrl
                 .addOnSuccessListener {
                     val profileUpdates = UserProfileChangeRequest.Builder().setPhotoUri(it).build()
                     mViewModel.currentUser.updateProfile(profileUpdates)
-                    Toast.makeText(activity,"Profile Picture Updated!",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Profile Picture Updated!", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(activity,"Cannot Update Profile Picture!",Toast.LENGTH_SHORT).show()
-                    Log.d(TAG,it.toString())
+                    Toast.makeText(activity, "Cannot Update Profile Picture!", Toast.LENGTH_SHORT)
+                        .show()
+                    Log.d(TAG, it.toString())
                 }
         }
     }
 
-    private fun displayCustomAlert(){
-        val custView = layoutInflater.inflate(R.layout.alert_edit_box,null)
+    private fun displayCustomAlert() {
+        val custView = layoutInflater.inflate(R.layout.alert_edit_box, null)
         val alertDialog = AlertDialog.Builder(requireContext()).create()
         alertDialog.setCancelable(false)
 
@@ -207,10 +213,12 @@ class SettingsFragment:Fragment() {
         }
 
         btnOk.setOnClickListener {
-            val nickname = custView.findViewById<TextInputEditText>(R.id.et_nickname).text.toString()
+            val nickname =
+                custView.findViewById<TextInputEditText>(R.id.et_nickname).text.toString()
             //update nickname
-            if(!mViewModel.hasInternetConnection()){
-                Snackbar.make(requireView(),"No Internet Connection!",Snackbar.LENGTH_SHORT).show()
+            if (!mViewModel.hasInternetConnection()) {
+                Snackbar.make(requireView(), "No Internet Connection!", Snackbar.LENGTH_SHORT)
+                    .show()
                 alertDialog.cancel()
                 return@setOnClickListener
             }
@@ -226,14 +234,14 @@ class SettingsFragment:Fragment() {
     }
 
 
-
-    private fun initValues(view: View){
+    private fun initValues(view: View) {
         settingsBinding?.apply {
             val nickname = mViewModel.currentUser.email?.split("@")?.get(0)
             lifecycleScope.launch {
 
-                if(mViewModel.currentUser.displayName.isNullOrEmpty()){
-                    val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
+                if (mViewModel.currentUser.displayName.isNullOrEmpty()) {
+                    val profileUpdates =
+                        UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
                     mViewModel.currentUser.updateProfile(profileUpdates)
                 }
 
