@@ -185,12 +185,12 @@ class ChatHomeFragment:Fragment() {
 
 
     private fun createReceiver(email: String){
-        val userRef = storage.reference.child("${SettingsFragment.USER_IMAGE}/${FirebaseAuth.getInstance().currentUser!!.email}/")
+        val userRef = storage.reference.child("${SettingsFragment.USER_IMAGE}/${email}/")
         lifecycleScope.launch(Dispatchers.IO){
             userRef.downloadUrl
                 .addOnSuccessListener {
-                    Log.d(TAG,"image download rv :Success")
-                    val receiver = Receiver(email,email,it.toString())
+                    Log.d(TAG,"image download rv :Success ")
+                    val receiver = Receiver(email,email,it)
                    // adapter.differ.currentList.add(receiver)
                     val newList = mutableListOf<Receiver>()
                     adapter.differ.currentList.forEach { newList.add(it) }

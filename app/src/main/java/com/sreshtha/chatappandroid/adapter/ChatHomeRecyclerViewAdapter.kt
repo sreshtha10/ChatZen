@@ -1,5 +1,6 @@
 package com.sreshtha.chatappandroid.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -11,8 +12,12 @@ import com.sreshtha.chatappandroid.databinding.ItemChatHomeRvBinding
 import com.sreshtha.chatappandroid.model.Receiver
 
 class ChatHomeRecyclerViewAdapter :RecyclerView.Adapter<ChatHomeRecyclerViewAdapter.ChatHomeViewHolder>() {
-    inner class ChatHomeViewHolder(val binding:ItemChatHomeRvBinding):RecyclerView.ViewHolder(binding.root)
 
+    companion object{
+        const val  TAG = "CHAT_HOME_RV"
+    }
+
+    inner class ChatHomeViewHolder(val binding:ItemChatHomeRvBinding):RecyclerView.ViewHolder(binding.root)
     private val diffCallback = object : DiffUtil.ItemCallback<Receiver>(){
         override fun areItemsTheSame(oldItem: Receiver, newItem: Receiver): Boolean {
             return oldItem.email == newItem.email
@@ -38,8 +43,8 @@ class ChatHomeRecyclerViewAdapter :RecyclerView.Adapter<ChatHomeRecyclerViewAdap
 
     override fun onBindViewHolder(holder: ChatHomeViewHolder, position: Int) {
         holder.binding.apply {
+            Log.d(TAG,differ.currentList[position].photoUrl.toString())
             Glide.with(holder.binding.root)
-                .asBitmap()
                 .load(differ.currentList[position].photoUrl)
                 .placeholder(R.drawable.ic_dummy_profile)
                 .override(100,100)
