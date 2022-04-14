@@ -31,7 +31,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat_home"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="8dp"

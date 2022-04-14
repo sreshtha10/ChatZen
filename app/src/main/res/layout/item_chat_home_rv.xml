@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
     android:padding="8dp"
     android:background="@drawable/edit_text_background"
     android:backgroundTint="@color/txtColor">
@@ -25,7 +26,7 @@
         android:fontFamily="@font/regular"
         android:text="Sreshtha Mehrotra"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
         app:layout_constraintStart_toEndOf="@+id/iv_chat_user"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,8 +38,9 @@
         android:fontFamily="@font/medium_italic"
         android:text="sreshtha.mehrotra@gmail.com"
         android:textColor="@color/white"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/iv_chat_user"
         app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
