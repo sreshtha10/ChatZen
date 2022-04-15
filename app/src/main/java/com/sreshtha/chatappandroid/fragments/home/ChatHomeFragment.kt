@@ -15,12 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.sreshtha.chatappandroid.R
-import com.sreshtha.chatappandroid.activities.HomeActivity
 import com.sreshtha.chatappandroid.adapter.ChatHomeRecyclerViewAdapter
 import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
 import com.sreshtha.chatappandroid.model.Message
@@ -31,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// TODO make image load from storage seq when initially called to fetch all friends
+
 // TODO store nickname somehow
 // TODO create touch on item of rv chat home
 // TODO fragment & layout for chat
@@ -146,7 +144,7 @@ class ChatHomeFragment : Fragment() {
                 when {
                     doesUserExist -> {
                         //TODO check if chat exists or not.
-                        db.collection("${FirebaseAuth.getInstance().currentUser!!.email}")
+                        db.collection("${mViewModel.currentUser.email}")
                             .document(email).get()
                             .addOnFailureListener {
                                 createChat(msg, email)
@@ -273,7 +271,7 @@ class ChatHomeFragment : Fragment() {
 
     private fun initRecyclerViewData() {
         chatHomeBinding?.dotLoader?.visibility = View.VISIBLE
-        db.collection(FirebaseAuth.getInstance().currentUser!!.email.toString()).get()
+        db.collection(mViewModel.currentUser.email.toString()).get()
             .addOnFailureListener {
                 Log.d(TAG, it.toString())
             }
