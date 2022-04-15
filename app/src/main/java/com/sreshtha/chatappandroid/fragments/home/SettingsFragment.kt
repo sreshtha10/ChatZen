@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -37,7 +38,7 @@ import java.io.ByteArrayOutputStream
 
 class SettingsFragment : Fragment() {
     private var settingsBinding: FragmentSettingsBinding? = null
-    private lateinit var mViewModel: HomeViewModel
+    private val mViewModel: HomeViewModel by activityViewModels()
     private val storage = FirebaseStorage.getInstance(Constants.CLOUD_URL)
 
 
@@ -82,7 +83,6 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         settingsBinding = FragmentSettingsBinding.inflate(inflater, container, false)
-        mViewModel = (activity as HomeActivity).viewModel
         return settingsBinding?.root
     }
 

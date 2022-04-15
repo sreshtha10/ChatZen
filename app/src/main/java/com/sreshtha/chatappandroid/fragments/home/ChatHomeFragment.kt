@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -24,8 +26,10 @@ import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
 import com.sreshtha.chatappandroid.model.Message
 import com.sreshtha.chatappandroid.model.Receiver
 import com.sreshtha.chatappandroid.util.Constants
+import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO make image load from storage seq when initially called to fetch all friends
 // TODO store nickname somehow
@@ -40,6 +44,10 @@ class ChatHomeFragment : Fragment() {
     private val db = Firebase.firestore
     private lateinit var adapter: ChatHomeRecyclerViewAdapter
     private val storage = FirebaseStorage.getInstance(Constants.CLOUD_URL)
+
+    private val mViewModel: HomeViewModel by activityViewModels()
+    private val imageDownloadLiveData = MutableLiveData<Receiver>()
+    private var rvList = mutableListOf<Receiver>()
 
     companion object {
         const val TAG = "CHAT_HOME_FRAGMENT"
@@ -59,27 +67,14 @@ class ChatHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerViewData()
 
-        //TODO fetch all the chats which are initiated
-        db.collection(FirebaseAuth.getInstance().currentUser!!.email.toString()).get()
-            .addOnFailureListener {
-                Log.d(TAG, it.toString())
-            }
-            .addOnSuccessListener {
-                val docs = it.documents
-                if (docs.isEmpty()) {
-                    return@addOnSuccessListener
-                }
-
-                val newList = mutableListOf<Receiver>()
-                docs.forEach {
-                    Log.d(TAG, it.id)
-                    val receiver = getReceiverForEmail(it.id)
-                    newList.add(receiver)
-                }
-                adapter.differ.submitList(newList)
-                Log.d(TAG, "fetching all collections :success")
-            }
+        imageDownloadLiveData.observe(viewLifecycleOwner) { receiver ->
+            rvList.add(receiver)
+            adapter.differ.submitList(rvList)
+            chatHomeBinding?.dotLoader?.visibility = View.GONE
+            Log.d(TAG, "fetching all collections :success")
+        }
 
         chatHomeBinding?.apply {
             ivAddFriend.setOnClickListener {
@@ -119,7 +114,7 @@ class ChatHomeFragment : Fragment() {
 
         btnOk.setOnClickListener {
             val email = custView.findViewById<TextInputEditText>(R.id.et_nickname).text.toString()
-            if (!(activity as HomeActivity).viewModel.hasInternetConnection()) {
+            if (!mViewModel.hasInternetConnection()) {
                 Snackbar.make(requireView(), "No Internet Connection!", Snackbar.LENGTH_SHORT)
                     .show()
                 alertDialog.cancel()
@@ -208,7 +203,7 @@ class ChatHomeFragment : Fragment() {
 
     private fun createChat(msg: Message, email: String) {
         //for sender side
-        db.collection((activity as HomeActivity).viewModel.currentUser.email.toString())
+        db.collection(mViewModel.currentUser.email.toString())
             .document(email).set(msg)
             .addOnFailureListener {
                 //todo toast
@@ -221,7 +216,7 @@ class ChatHomeFragment : Fragment() {
 
         //for reciever side
         db.collection(email)
-            .document((activity as HomeActivity).viewModel.currentUser.email.toString()).set(msg)
+            .document(mViewModel.currentUser.email.toString()).set(msg)
             .addOnFailureListener {
                 //todo toast
                 Log.d(TAG, it.toString())
@@ -258,20 +253,52 @@ class ChatHomeFragment : Fragment() {
     }
 
 
-    private fun getReceiverForEmail(email: String): Receiver {
-        val receiver = Receiver(email, email, null)
-        val userRef = storage.reference.child("${SettingsFragment.USER_IMAGE}/${email}/")
-        lifecycleScope.launch(Dispatchers.IO) {
+    private suspend fun getReceiverForEmail(email: String): Receiver {
+        return withContext(Dispatchers.IO) {
+            val receiver = Receiver(email, email, null)
+            val userRef = storage.reference.child("${SettingsFragment.USER_IMAGE}/${email}/")
             userRef.downloadUrl
                 .addOnFailureListener {
                     Log.d(TAG, it.toString())
                 }
                 .addOnSuccessListener {
                     receiver.photoUrl = it
+                    Log.d(TAG, it.toString())
                 }
+            receiver
         }
 
-        return receiver
     }
+
+
+    private fun initRecyclerViewData() {
+        chatHomeBinding?.dotLoader?.visibility = View.VISIBLE
+        db.collection(FirebaseAuth.getInstance().currentUser!!.email.toString()).get()
+            .addOnFailureListener {
+                Log.d(TAG, it.toString())
+            }
+            .addOnSuccessListener {
+                val docs = it.documents
+                if (docs.isEmpty()) {
+                    return@addOnSuccessListener
+                }
+                docs.forEach {
+                    Log.d(TAG, it.id)
+                    val email = it.id
+                    val userRef =
+                        storage.reference.child("${SettingsFragment.USER_IMAGE}/${it.id}/")
+                    userRef.downloadUrl
+                        .addOnFailureListener {
+                            Log.d(TAG, it.toString())
+                            imageDownloadLiveData.value = Receiver(email, email, null)
+                        }
+                        .addOnSuccessListener {
+                            imageDownloadLiveData.value = Receiver(email, email, it)
+                            Log.d(TAG,it.toString())
+                        }
+                }
+            }
+    }
+
 
 }
