@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,7 +48,7 @@ class ChatHomeFragment : Fragment() {
     private lateinit var adapter: ChatHomeRecyclerViewAdapter
     private val storage = FirebaseStorage.getInstance(Constants.CLOUD_URL)
 
-    private lateinit var mViewModel: HomeViewModel
+    private val mViewModel: HomeViewModel by activityViewModels()
     private val imageDownloadLiveData = MutableLiveData<Receiver>()
     private var rvList = mutableListOf<Receiver>()
 
@@ -63,11 +64,11 @@ class ChatHomeFragment : Fragment() {
     ): View? {
         chatHomeBinding = FragmentChatHomeBinding.inflate(inflater, container, false)
         adapter = ChatHomeRecyclerViewAdapter()
-        waitForViewModel()
+        //waitForViewModel()
         return chatHomeBinding?.root
     }
 
-    private fun waitForViewModel() {
+    /*private fun waitForViewModel() {
         Handler(Looper.getMainLooper()).postDelayed({
             if ((activity as HomeActivity).viewModel != null) {
                 mViewModel = ((activity as HomeActivity).viewModel)!!
@@ -78,11 +79,13 @@ class ChatHomeFragment : Fragment() {
                 waitForViewModel()
             }
         }, Long.MIN_VALUE)
-    }
+    }*/
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerViewData()
+        initRecyclerView()
 
         imageDownloadLiveData.observe(viewLifecycleOwner) { receiver ->
             rvList.forEach {
