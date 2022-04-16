@@ -28,10 +28,9 @@ import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
-// TODO store nickname somehow
+// TODO don't add already added user to the chat
 // TODO create touch on item of rv chat home
 // TODO fragment & layout for chat
 // TODO design rv for chat (UI+Adapter)
@@ -47,6 +46,7 @@ class ChatHomeFragment : Fragment() {
 
     private val mViewModel: HomeViewModel by activityViewModels()
     private val imageDownloadLiveData = MutableLiveData<Receiver>()
+    private val nicknameLiveData = MutableLiveData<Receiver>()
     private var rvList = mutableListOf<Receiver>()
 
     companion object {
@@ -70,7 +70,8 @@ class ChatHomeFragment : Fragment() {
         initRecyclerViewData()
         initRecyclerView()
 
-        imageDownloadLiveData.observe(viewLifecycleOwner) { receiver ->
+
+        nicknameLiveData.observe(viewLifecycleOwner){ receiver ->
             rvList.forEach {
                 if (it.email == receiver.email) {
                     adapter.differ.submitList(rvList)
@@ -81,8 +82,24 @@ class ChatHomeFragment : Fragment() {
             rvList.add(receiver)
             adapter.differ.submitList(rvList)
             chatHomeBinding?.dotLoader?.visibility = View.GONE
-
             Log.d(TAG, "fetching all collections :success")
+        }
+
+
+        imageDownloadLiveData.observe(viewLifecycleOwner) { receiver ->
+            db.collection(Constants.NICKNAME_REF).document(Constants.DOC_NICKNAME_UID).get()
+                .addOnSuccessListener {
+                    if(it.data!=null && it.data!![receiver.email]!=null){
+                        nicknameLiveData.value = Receiver(receiver.email,it.data!![receiver.email].toString(),receiver.photoUrl)
+                    }
+                    else{
+                        nicknameLiveData.value = Receiver(receiver.email,receiver.email,receiver.photoUrl)
+                    }
+                }
+                .addOnFailureListener {
+                    // todo create without nickname
+                    nicknameLiveData.value = Receiver(receiver.email,receiver.email,receiver.photoUrl)
+                }
         }
 
         chatHomeBinding?.apply {
@@ -91,8 +108,6 @@ class ChatHomeFragment : Fragment() {
                 displayCustomAlert()
             }
         }
-
-
     }
 
 
