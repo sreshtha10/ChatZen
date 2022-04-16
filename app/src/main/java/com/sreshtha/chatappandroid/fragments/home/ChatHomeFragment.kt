@@ -2,8 +2,6 @@ package com.sreshtha.chatappandroid.fragments.home
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +19,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.sreshtha.chatappandroid.R
-import com.sreshtha.chatappandroid.activities.HomeActivity
 import com.sreshtha.chatappandroid.adapter.ChatHomeRecyclerViewAdapter
 import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
 import com.sreshtha.chatappandroid.model.Message
@@ -64,22 +61,8 @@ class ChatHomeFragment : Fragment() {
     ): View? {
         chatHomeBinding = FragmentChatHomeBinding.inflate(inflater, container, false)
         adapter = ChatHomeRecyclerViewAdapter()
-        //waitForViewModel()
         return chatHomeBinding?.root
     }
-
-    /*private fun waitForViewModel() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            if ((activity as HomeActivity).viewModel != null) {
-                mViewModel = ((activity as HomeActivity).viewModel)!!
-                initRecyclerViewData()
-                initRecyclerView()
-            }
-            else {
-                waitForViewModel()
-            }
-        }, Long.MIN_VALUE)
-    }*/
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,7 +72,7 @@ class ChatHomeFragment : Fragment() {
 
         imageDownloadLiveData.observe(viewLifecycleOwner) { receiver ->
             rvList.forEach {
-                if(it.email == receiver.email){
+                if (it.email == receiver.email) {
                     adapter.differ.submitList(rvList)
                     chatHomeBinding?.dotLoader?.visibility = View.INVISIBLE
                     return@observe
@@ -108,7 +91,6 @@ class ChatHomeFragment : Fragment() {
                 displayCustomAlert()
             }
         }
-
 
 
     }
@@ -319,7 +301,7 @@ class ChatHomeFragment : Fragment() {
                         }
                         .addOnSuccessListener {
                             imageDownloadLiveData.value = Receiver(email, email, it)
-                            Log.d(TAG,it.toString())
+                            Log.d(TAG, it.toString())
                         }
                 }
             }
