@@ -32,11 +32,12 @@ import com.sreshtha.chatappandroid.activities.MainActivity
 import com.sreshtha.chatappandroid.databinding.FragmentSettingsBinding
 import com.sreshtha.chatappandroid.util.Constants
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
-
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
     private var settingsBinding: FragmentSettingsBinding? = null
     private val mViewModel: HomeViewModel by activityViewModels()

@@ -9,9 +9,11 @@ import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.ActivityHomeBinding
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeBinding: ActivityHomeBinding

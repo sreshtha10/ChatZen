@@ -27,6 +27,7 @@ import com.sreshtha.chatappandroid.model.Message
 import com.sreshtha.chatappandroid.model.Receiver
 import com.sreshtha.chatappandroid.util.Constants
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,7 +40,7 @@ import kotlinx.coroutines.withContext
 // TODO maintain send and delete
 // TODO add delete user functionality
 
-
+@AndroidEntryPoint
 class ChatHomeFragment : Fragment() {
     private var chatHomeBinding: FragmentChatHomeBinding? = null
     private val db = Firebase.firestore

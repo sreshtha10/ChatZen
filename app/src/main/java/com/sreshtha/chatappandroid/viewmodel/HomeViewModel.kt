@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.sreshtha.chatappandroid.ChatAppAndroid
 import com.sreshtha.chatappandroid.model.Message
 
+
 class HomeViewModel(
     val app: Application,
     val user: FirebaseUser
