@@ -25,6 +25,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.activities.HomeActivity
@@ -42,6 +44,7 @@ class SettingsFragment : Fragment() {
     private var settingsBinding: FragmentSettingsBinding? = null
     private val mViewModel: HomeViewModel by activityViewModels()
     private val storage = FirebaseStorage.getInstance(Constants.CLOUD_URL)
+    private val db = Firebase.firestore
 
 
     private val permissionLauncher =
@@ -76,7 +79,7 @@ class SettingsFragment : Fragment() {
     companion object {
         const val TAG = "SETTINGS_FRAGMENT"
         const val USER_SETTINGS = "user_settings"
-        const val USER_IMAGE = "user_image"
+
     }
 
     override fun onCreateView(
@@ -159,7 +162,7 @@ class SettingsFragment : Fragment() {
             //todo toast
             return
         }
-        val userRef = storage.reference.child("$USER_IMAGE/${mViewModel.currentUser.email}/")
+        val userRef = storage.reference.child("${Constants.USER_IMAGE}/${mViewModel.currentUser.email}/")
 
         //val bitmap  = (settingsBinding?.profileImage?.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
@@ -182,7 +185,7 @@ class SettingsFragment : Fragment() {
 
 
     private fun getUrlFromCloud() {
-        val userRef = storage.reference.child("$USER_IMAGE/${mViewModel.currentUser.email}/")
+        val userRef = storage.reference.child("${Constants.USER_IMAGE}/${mViewModel.currentUser.email}/")
         lifecycleScope.launch(Dispatchers.IO) {
             userRef.downloadUrl
                 .addOnSuccessListener {
@@ -227,6 +230,7 @@ class SettingsFragment : Fragment() {
             settingsBinding?.dotLoader?.visibility = View.VISIBLE
             val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
             mViewModel.currentUser.updateProfile(profileUpdates)
+            changeNicknameOnFireStore(nickname)
             settingsBinding?.dotLoader?.visibility = View.GONE
             settingsBinding?.tvUserName?.text = nickname
             alertDialog.cancel()
@@ -254,6 +258,42 @@ class SettingsFragment : Fragment() {
             Glide.with(view).load(mViewModel.currentUser.photoUrl).into(profileImage)
         }
     }
+
+
+    private fun changeNicknameOnFireStore(nickname:String){
+        db.collection(Constants.NICKNAME_REF).document(Constants.DOC_NICKNAME_UID).get()
+            .addOnFailureListener {
+
+            }
+            .addOnSuccessListener {
+                if(it.data==null){
+                    //create new document
+                    db.collection(Constants.NICKNAME_REF).document(Constants.DOC_NICKNAME_UID).set(
+                        mapOf(mViewModel.currentUser.email to nickname)
+                    )
+                        .addOnSuccessListener {
+
+                        }
+                        .addOnFailureListener {
+
+                        }
+                }
+                else{
+                    val map = it.data
+                    map?.set(mViewModel.currentUser.email.toString(), nickname)
+                    if (map != null) {
+                        db.collection(Constants.NICKNAME_REF).document(Constants.DOC_NICKNAME_UID).set(map)
+                            .addOnFailureListener {
+
+                            }
+                            .addOnSuccessListener {
+                                
+                            }
+                    }
+                }
+            }
+    }
+
 
 
 }

@@ -237,7 +237,7 @@ class ChatHomeFragment : Fragment() {
 
 
     private fun createReceiver(email: String) {
-        val userRef = storage.reference.child("${SettingsFragment.USER_IMAGE}/${email}/")
+        val userRef = storage.reference.child("${Constants.USER_IMAGE}/${email}/")
         lifecycleScope.launch(Dispatchers.IO) {
             userRef.downloadUrl
                 .addOnSuccessListener {
@@ -263,7 +263,7 @@ class ChatHomeFragment : Fragment() {
     private suspend fun getReceiverForEmail(email: String): Receiver {
         return withContext(Dispatchers.IO) {
             val receiver = Receiver(email, email, null)
-            val userRef = storage.reference.child("${SettingsFragment.USER_IMAGE}/${email}/")
+            val userRef = storage.reference.child("${Constants.USER_IMAGE}/${email}/")
             userRef.downloadUrl
                 .addOnFailureListener {
                     Log.d(TAG, it.toString())
@@ -293,7 +293,7 @@ class ChatHomeFragment : Fragment() {
                     Log.d(TAG, it.id)
                     val email = it.id
                     val userRef =
-                        storage.reference.child("${SettingsFragment.USER_IMAGE}/${it.id}/")
+                        storage.reference.child("${Constants.USER_IMAGE}/${it.id}/")
                     userRef.downloadUrl
                         .addOnFailureListener {
                             Log.d(TAG, it.toString())
