@@ -15,7 +15,9 @@
             app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/goto_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/chatFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -33,6 +35,8 @@
         android:label="ChatFragment" >
         <action
             android:id="@+id/goto_chatHomeFragment"
-            app:destination="@id/chatHomeFragment" />
+            app:destination="@id/chatHomeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 </navigation>

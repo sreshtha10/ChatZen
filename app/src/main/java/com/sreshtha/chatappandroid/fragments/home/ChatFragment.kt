@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.FragmentChatBinding
 
 class ChatFragment:Fragment() {
@@ -22,6 +24,12 @@ class ChatFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        chatBinding?.apply {
+            ivBackBtn.setOnClickListener {
+                findNavController().navigate(R.id.goto_chatHomeFragment)
+            }
+        }
 
     }
 
