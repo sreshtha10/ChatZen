@@ -237,45 +237,58 @@ class ChatHomeFragment : Fragment() {
 
 
     private fun createReceiver(email: String) {
-        val userRef = storage.reference.child("${Constants.USER_IMAGE}/${email}/")
-        lifecycleScope.launch(Dispatchers.IO) {
-            userRef.downloadUrl
-                .addOnSuccessListener {
-                    Log.d(TAG, "image download rv :Success ")
-                    val receiver = Receiver(email, email, it)
-                    val newList = mutableListOf<Receiver>()
-                    adapter.differ.currentList.forEach { newList.add(it) }
-                    newList.add(receiver)
-                    adapter.differ.submitList(newList)
+        db.collection(Constants.NICKNAME_REF).document(Constants.DOC_NICKNAME_UID).get()
+            .addOnFailureListener {
+
+            }
+            .addOnSuccessListener {
+                if (it.data != null && it.data!![email] != null) {
+                    val nickname = it.data!![email].toString()
+                    val userRef = storage.reference.child("${Constants.USER_IMAGE}/${email}/")
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        userRef.downloadUrl
+                            .addOnSuccessListener {
+                                Log.d(TAG, "image download rv :Success ")
+                                val receiver = Receiver(email, nickname, it)
+                                val newList = mutableListOf<Receiver>()
+                                adapter.differ.currentList.forEach { newList.add(it) }
+                                newList.add(receiver)
+                                adapter.differ.submitList(newList)
+                            }
+                            .addOnFailureListener {
+                                Log.d(TAG, it.toString())
+                                val receiver = Receiver(email, email, null)
+                                val newList = mutableListOf<Receiver>()
+                                adapter.differ.currentList.forEach { newList.add(it) }
+                                newList.add(receiver)
+                                adapter.differ.submitList(newList)
+                            }
+                    }
+                } else {
+                    val userRef = storage.reference.child("${Constants.USER_IMAGE}/${email}/")
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        userRef.downloadUrl
+                            .addOnSuccessListener {
+                                Log.d(TAG, "image download rv :Success ")
+                                val receiver = Receiver(email, email, it)
+                                val newList = mutableListOf<Receiver>()
+                                adapter.differ.currentList.forEach { newList.add(it) }
+                                newList.add(receiver)
+                                adapter.differ.submitList(newList)
+                            }
+                            .addOnFailureListener {
+                                Log.d(TAG, it.toString())
+                                val receiver = Receiver(email, email, null)
+                                val newList = mutableListOf<Receiver>()
+                                adapter.differ.currentList.forEach { newList.add(it) }
+                                newList.add(receiver)
+                                adapter.differ.submitList(newList)
+                            }
+                    }
                 }
-                .addOnFailureListener {
-                    Log.d(TAG, it.toString())
-                    val receiver = Receiver(email, email, null)
-                    val newList = mutableListOf<Receiver>()
-                    adapter.differ.currentList.forEach { newList.add(it) }
-                    newList.add(receiver)
-                    adapter.differ.submitList(newList)
-                }
-        }
+            }
     }
 
-
-    private suspend fun getReceiverForEmail(email: String): Receiver {
-        return withContext(Dispatchers.IO) {
-            val receiver = Receiver(email, email, null)
-            val userRef = storage.reference.child("${Constants.USER_IMAGE}/${email}/")
-            userRef.downloadUrl
-                .addOnFailureListener {
-                    Log.d(TAG, it.toString())
-                }
-                .addOnSuccessListener {
-                    receiver.photoUrl = it
-                    Log.d(TAG, it.toString())
-                }
-            receiver
-        }
-
-    }
 
 
     private fun initRecyclerViewData() {
