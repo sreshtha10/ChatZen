@@ -1,7 +1,6 @@
 package com.sreshtha.chatappandroid.activities
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -12,17 +11,18 @@ import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModelFactory
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 
+
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeBinding: ActivityHomeBinding
-    private val viewModel: HomeViewModel by viewModels { HomeViewModelFactory(application,FirebaseAuth.getInstance().currentUser!!) }
+     var viewModel: HomeViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         val viewModelFactory =
             HomeViewModelFactory(application, FirebaseAuth.getInstance().currentUser!!)
-        //viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         setTheme(R.style.Theme_ChatAppAndroid)
         setContentView(homeBinding.root)
 

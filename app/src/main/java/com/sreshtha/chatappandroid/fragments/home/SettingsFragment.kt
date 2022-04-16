@@ -36,6 +36,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
+
 class SettingsFragment : Fragment() {
     private var settingsBinding: FragmentSettingsBinding? = null
     private val mViewModel: HomeViewModel by activityViewModels()

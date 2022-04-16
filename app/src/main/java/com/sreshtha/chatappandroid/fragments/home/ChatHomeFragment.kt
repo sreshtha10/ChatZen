@@ -2,13 +2,14 @@ package com.sreshtha.chatappandroid.fragments.home
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.sreshtha.chatappandroid.R
+import com.sreshtha.chatappandroid.activities.HomeActivity
 import com.sreshtha.chatappandroid.adapter.ChatHomeRecyclerViewAdapter
 import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
 import com.sreshtha.chatappandroid.model.Message
@@ -37,13 +39,14 @@ import kotlinx.coroutines.withContext
 // TODO maintain send and delete
 // TODO add delete user functionality
 
+
 class ChatHomeFragment : Fragment() {
     private var chatHomeBinding: FragmentChatHomeBinding? = null
     private val db = Firebase.firestore
     private lateinit var adapter: ChatHomeRecyclerViewAdapter
     private val storage = FirebaseStorage.getInstance(Constants.CLOUD_URL)
 
-    private val mViewModel: HomeViewModel by activityViewModels()
+    private lateinit var mViewModel: HomeViewModel
     private val imageDownloadLiveData = MutableLiveData<Receiver>()
     private var rvList = mutableListOf<Receiver>()
 
@@ -59,18 +62,39 @@ class ChatHomeFragment : Fragment() {
     ): View? {
         chatHomeBinding = FragmentChatHomeBinding.inflate(inflater, container, false)
         adapter = ChatHomeRecyclerViewAdapter()
+        waitForViewModel()
         return chatHomeBinding?.root
+    }
+
+    private fun waitForViewModel() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            if ((activity as HomeActivity).viewModel != null) {
+                mViewModel = ((activity as HomeActivity).viewModel)!!
+                initRecyclerViewData()
+                initRecyclerView()
+            }
+            else {
+                waitForViewModel()
+            }
+        }, Long.MIN_VALUE)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerViewData()
 
         imageDownloadLiveData.observe(viewLifecycleOwner) { receiver ->
+            rvList.forEach {
+                if(it.email == receiver.email){
+                    adapter.differ.submitList(rvList)
+                    chatHomeBinding?.dotLoader?.visibility = View.INVISIBLE
+                    return@observe
+                }
+            }
             rvList.add(receiver)
             adapter.differ.submitList(rvList)
             chatHomeBinding?.dotLoader?.visibility = View.GONE
+
             Log.d(TAG, "fetching all collections :success")
         }
 
@@ -81,7 +105,6 @@ class ChatHomeFragment : Fragment() {
             }
         }
 
-        initRecyclerView()
 
 
     }
