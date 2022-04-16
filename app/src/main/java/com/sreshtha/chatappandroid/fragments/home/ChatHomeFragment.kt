@@ -30,7 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-// TODO don't add already added user to the chat
 // TODO create touch on item of rv chat home
 // TODO fragment & layout for chat
 // TODO design rv for chat (UI+Adapter)
@@ -99,6 +98,7 @@ class ChatHomeFragment : Fragment() {
                 .addOnFailureListener {
                     // todo create without nickname
                     nicknameLiveData.value = Receiver(receiver.email,receiver.email,receiver.photoUrl)
+                    Log.d(TAG,it.toString())
                 }
         }
 
