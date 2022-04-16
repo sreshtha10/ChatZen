@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.databinding.ItemChatHomeRvBinding
 import com.sreshtha.chatappandroid.model.Receiver
+import java.lang.Exception
 
 class ChatHomeRecyclerViewAdapter :
     RecyclerView.Adapter<ChatHomeRecyclerViewAdapter.ChatHomeViewHolder>() {
@@ -54,10 +55,30 @@ class ChatHomeRecyclerViewAdapter :
                 .into(ivChatUser)
             tvChatEmail.text = differ.currentList[position].email
             tvNickname.text = differ.currentList[position].nickname
+
+
+            root.setOnClickListener {
+                try {
+                    onItemClickListener?.let { it(differ.currentList[position]) }
+                }
+                catch (e:Exception){
+                    Log.d(TAG,"Cannot set listener ${e.toString()}")
+                }
+            }
         }
+
+
+
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
+
+    private var onItemClickListener:((Receiver) -> Unit)?=null
+
+    fun setOnClickListener(listener : (Receiver)->Unit){
+        onItemClickListener = listener
+    }
+
 }

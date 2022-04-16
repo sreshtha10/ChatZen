@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -69,6 +70,12 @@ class ChatHomeFragment : Fragment() {
         initRecyclerViewData()
         initRecyclerView()
 
+        adapter.setOnClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("receiver",it)
+            }
+            findNavController().navigate(R.id.goto_chatFragment,bundle)
+        }
 
         nicknameLiveData.observe(viewLifecycleOwner){ receiver ->
             rvList.forEach {
