@@ -263,7 +263,7 @@ class SettingsFragment : Fragment() {
     private fun changeNicknameOnFireStore(nickname:String){
         db.collection(Constants.NICKNAME_REF).document(Constants.DOC_NICKNAME_UID).get()
             .addOnFailureListener {
-
+                Log.d(TAG,it.toString())
             }
             .addOnSuccessListener {
                 if(it.data==null){
@@ -272,10 +272,10 @@ class SettingsFragment : Fragment() {
                         mapOf(mViewModel.currentUser.email to nickname)
                     )
                         .addOnSuccessListener {
-
+                            Log.d(TAG,"add nickname to firestore when no doc exist: success")
                         }
                         .addOnFailureListener {
-
+                            Log.d(TAG,it.toString())
                         }
                 }
                 else{
@@ -284,10 +284,10 @@ class SettingsFragment : Fragment() {
                     if (map != null) {
                         db.collection(Constants.NICKNAME_REF).document(Constants.DOC_NICKNAME_UID).set(map)
                             .addOnFailureListener {
-
+                                Log.d(TAG,it.toString())
                             }
                             .addOnSuccessListener {
-                                
+                                Log.d(TAG,"add nickname to firestore when doc exists : success")
                             }
                     }
                 }
