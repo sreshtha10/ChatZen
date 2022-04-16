@@ -142,7 +142,11 @@ class ChatHomeFragment : Fragment() {
                 alertDialog.cancel()
                 return@setOnClickListener
             }
-
+            if(checkIfUserAlreadyPresentInChatRV(email)){
+                alertDialog.cancel()
+                Snackbar.make(requireView(),"User already added to the chat!",Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             //initChat
             initChat(email)
             alertDialog.cancel()
@@ -335,5 +339,14 @@ class ChatHomeFragment : Fragment() {
             }
     }
 
+
+    private fun checkIfUserAlreadyPresentInChatRV(email: String):Boolean{
+        rvList.forEach {
+            if(it.email == email){
+                return true
+            }
+        }
+        return false
+    }
 
 }
