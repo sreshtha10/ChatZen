@@ -3,21 +3,58 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/bgColor">
+    android:background="@color/bgColor"
+    android:layout_marginVertical="16dp">
 
 
-    <TextView
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:id="@+id/ll_sender"
+        android:layout_width="0dp"
+        android:maxWidth="320dp"
         android:layout_height="wrap_content"
-        android:text="SENDER MSG"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="20sp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@drawable/edit_text_background"
+        android:backgroundTint="@color/txtViewBg"
+        android:orientation="vertical"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/medium"
+            android:text="You"
+            android:textColor="@color/btnColor"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/medium"
+            android:text="Hey ! How are you?"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/tv_time_stamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:text="10:34pm"
+            android:textColor="@color/btnColor" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

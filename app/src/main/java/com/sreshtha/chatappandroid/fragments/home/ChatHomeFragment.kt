@@ -69,7 +69,7 @@ class ChatHomeFragment : Fragment() {
 
         adapter.setOnClickListener {
             val bundle = Bundle().apply {
-                putSerializable("receiver",it)
+                putSerializable("RECEIVER",it)
             }
             findNavController().navigate(R.id.goto_chatFragment,bundle)
         }
