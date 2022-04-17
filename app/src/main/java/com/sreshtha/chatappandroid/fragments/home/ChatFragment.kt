@@ -37,7 +37,7 @@ class ChatFragment:Fragment() {
             listOf(
                 ChatRecyclerViewItem(nickname = "ABC", message = Message("hello","ds",true)),
                 ChatRecyclerViewItem(nickname = "RECEIVER", message = Message("hello","ds",false))
-            )
+            ).reversed()
         )
 
         chatBinding?.apply {
@@ -57,7 +57,9 @@ class ChatFragment:Fragment() {
     private fun setUpRecyclerView(){
         chatBinding?.apply {
             rvChat.adapter = chatAdapter
-            rvChat.layoutManager = LinearLayoutManager(requireContext())
+            rvChat.layoutManager = LinearLayoutManager(requireContext()).apply {
+                this.reverseLayout = true
+            }
         }
     }
 

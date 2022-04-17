@@ -31,9 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-// TODO create touch on item of rv chat home
-// TODO fragment & layout for chat
-// TODO design rv for chat (UI+Adapter)
 // TODO maintain send and delete
 // TODO add delete user functionality
 
