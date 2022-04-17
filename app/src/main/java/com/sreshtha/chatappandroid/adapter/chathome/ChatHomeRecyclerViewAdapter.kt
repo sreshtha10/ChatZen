@@ -1,4 +1,4 @@
-package com.sreshtha.chatappandroid.adapter
+package com.sreshtha.chatappandroid.adapter.chathome
 
 import android.util.Log
 import android.view.LayoutInflater

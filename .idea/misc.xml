@@ -20,6 +20,8 @@
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/fragment_settings.xml" value="0.25" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/fragment_signup.xml" value="0.23541666666666666" />
         <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/item_chat_home_rv.xml" value="0.346875" />
+        <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/item_receiver_chat.xml" value="0.3625" />
+        <entry key="..\:/Users/sresh/AndroidStudioProjects/ChatAppAndroid/app/src/main/res/layout/item_sender_chat.xml" value="0.3625" />
       </map>
     </option>
   </component>

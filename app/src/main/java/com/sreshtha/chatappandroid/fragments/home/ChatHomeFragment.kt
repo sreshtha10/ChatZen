@@ -20,7 +20,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.sreshtha.chatappandroid.R
-import com.sreshtha.chatappandroid.adapter.ChatHomeRecyclerViewAdapter
+import com.sreshtha.chatappandroid.adapter.chathome.ChatHomeRecyclerViewAdapter
 import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
 import com.sreshtha.chatappandroid.model.Message
 import com.sreshtha.chatappandroid.model.Receiver
