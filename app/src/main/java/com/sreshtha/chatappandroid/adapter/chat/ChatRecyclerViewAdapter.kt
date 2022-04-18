@@ -55,7 +55,10 @@ class ChatRecyclerViewAdapter : RecyclerView.Adapter<ChatRecyclerViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ChatRecyclerViewHolder, position: Int) {
-        return
+        return when(holder){
+            is ChatRecyclerViewHolder.ReceiverChatViewHolder -> holder.bind(differ.currentList[position])
+            is ChatRecyclerViewHolder.SenderChatViewHolder -> holder.bind(differ.currentList[position])
+        }
     }
 
     override fun getItemCount(): Int {

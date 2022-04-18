@@ -12,13 +12,21 @@ sealed class ChatRecyclerViewHolder(
 
      class SenderChatViewHolder(private val  itemSenderChatBinding: ItemSenderChatBinding):ChatRecyclerViewHolder(itemSenderChatBinding){
          fun bind(senderChatItem: ChatRecyclerViewItem){
-             // todo
+             itemSenderChatBinding.apply {
+                 tvMessage.text = senderChatItem.message.description
+                 tvNickname.text = senderChatItem.nickname
+                 tvTimeStamp.text = senderChatItem.message.timeStamp
+             }
          }
      }
 
     class ReceiverChatViewHolder(private  val itemReceiverChatBinding: ItemReceiverChatBinding):ChatRecyclerViewHolder(itemReceiverChatBinding){
         fun bind(receiverChatItem:ChatRecyclerViewItem){
-            //todo
+            itemReceiverChatBinding.apply {
+                tvMessage.text = receiverChatItem.message.description
+                tvNickname.text = receiverChatItem.nickname
+                tvTimeStamp.text = receiverChatItem.message.timeStamp
+            }
         }
     }
 
