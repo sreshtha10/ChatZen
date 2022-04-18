@@ -234,7 +234,7 @@ class ChatHomeFragment : Fragment() {
     private fun createChat(msg: Message, email: String) {
         //for sender side
         db.collection(mViewModel.currentUser.email.toString())
-            .document(email).set(msg)
+            .document(email).set(listOf<Message>(msg))
             .addOnFailureListener {
                 //todo toast
                 Log.d(TAG, it.toString())
@@ -246,7 +246,7 @@ class ChatHomeFragment : Fragment() {
 
         //for reciever side
         db.collection(email)
-            .document(mViewModel.currentUser.email.toString()).set(msg)
+            .document(mViewModel.currentUser.email.toString()).set(listOf<Message>(msg))
             .addOnFailureListener {
                 //todo toast
                 Log.d(TAG, it.toString())
@@ -318,11 +318,13 @@ class ChatHomeFragment : Fragment() {
         chatHomeBinding?.dotLoader?.visibility = View.VISIBLE
         db.collection(mViewModel.currentUser.email.toString()).get()
             .addOnFailureListener {
+                chatHomeBinding?.dotLoader?.visibility = View.GONE
                 Log.d(TAG, it.toString())
             }
             .addOnSuccessListener {
                 val docs = it.documents
                 if (docs.isEmpty()) {
+                    chatHomeBinding?.dotLoader?.visibility = View.GONE
                     return@addOnSuccessListener
                 }
                 docs.forEach {
