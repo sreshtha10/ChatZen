@@ -23,6 +23,7 @@ import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.adapter.chathome.ChatHomeRecyclerViewAdapter
 import com.sreshtha.chatappandroid.databinding.FragmentChatHomeBinding
 import com.sreshtha.chatappandroid.model.Message
+import com.sreshtha.chatappandroid.model.Messages
 import com.sreshtha.chatappandroid.model.Receiver
 import com.sreshtha.chatappandroid.util.Constants
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
@@ -234,7 +235,7 @@ class ChatHomeFragment : Fragment() {
     private fun createChat(msg: Message, email: String) {
         //for sender side
         db.collection(mViewModel.currentUser.email.toString())
-            .document(email).set(listOf<Message>(msg))
+            .document(email).set(Messages(messages = listOf(msg)))
             .addOnFailureListener {
                 //todo toast
                 Log.d(TAG, it.toString())
@@ -246,7 +247,7 @@ class ChatHomeFragment : Fragment() {
 
         //for reciever side
         db.collection(email)
-            .document(mViewModel.currentUser.email.toString()).set(listOf<Message>(msg))
+            .document(mViewModel.currentUser.email.toString()).set(Messages(messages = listOf(msg)))
             .addOnFailureListener {
                 //todo toast
                 Log.d(TAG, it.toString())
