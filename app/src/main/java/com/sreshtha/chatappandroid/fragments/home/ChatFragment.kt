@@ -138,8 +138,9 @@ class ChatFragment:Fragment() {
                     db.collection(mViewModel.currentUser.email.toString()).document(receiver!!.email).set(newMessages)
                         .addOnSuccessListener {
                             rvList.add(ChatRecyclerViewItem(nickname = mViewModel.currentUser.displayName.toString(), message = newMessage))
-                            chatAdapter.differ.submitList(rvList)
+                            chatAdapter.differ.submitList(rvList.reversed())
                             chatBinding?.etTypeHere?.text?.clear()
+                            showEmptyLabel(false)
                             Log.d(TAG,"setting new message : success")
                         }
                         .addOnFailureListener {
@@ -172,7 +173,7 @@ class ChatFragment:Fragment() {
 
                     val newMessages = Messages(newMessageList)
 
-                    db.collection(mViewModel.currentUser.email.toString()).document(receiver!!.email).set(newMessages)
+                    db.collection(receiver!!.email).document(mViewModel.currentUser.email.toString()).set(newMessages)
                         .addOnSuccessListener {
                             Log.d(TAG,"setting new message : success")
                         }
@@ -218,7 +219,9 @@ class ChatFragment:Fragment() {
                         }
                     }
 
-                    chatAdapter.differ.submitList(rvList)
+                    chatAdapter.differ.submitList(rvList.reversed())
+
+                    Log.d(TAG,chatAdapter.differ.currentList[chatAdapter.differ.currentList.size-1].message.isCurrentUserSender.toString())
                 }
             }
     }

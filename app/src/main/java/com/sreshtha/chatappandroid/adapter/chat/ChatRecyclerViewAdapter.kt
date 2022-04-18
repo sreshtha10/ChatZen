@@ -30,9 +30,9 @@ class ChatRecyclerViewAdapter : RecyclerView.Adapter<ChatRecyclerViewHolder>() {
         return when(viewType){
             R.layout.item_sender_chat -> {
                 ChatRecyclerViewHolder.SenderChatViewHolder(
-                    ItemSenderChatBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
+                            ItemSenderChatBinding.inflate(
+                                LayoutInflater.from(parent.context),
+                                parent,
                         false
                     )
                 )
