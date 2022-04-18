@@ -57,6 +57,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:number_of_dots="3" />
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_label_empty_rv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_cat"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_cat" />
+
+        <TextView
+            android:id="@+id/tv_label_empty_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/extra_bold"
+            android:text="Wow, such empty!"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
 
 

@@ -1,11 +1,11 @@
 package com.sreshtha.chatappandroid.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -18,9 +18,14 @@ import com.sreshtha.chatappandroid.adapter.chat.ChatRecyclerViewAdapter
 import com.sreshtha.chatappandroid.databinding.FragmentChatBinding
 import com.sreshtha.chatappandroid.model.ChatRecyclerViewItem
 import com.sreshtha.chatappandroid.model.Message
+import com.sreshtha.chatappandroid.model.Messages
 import com.sreshtha.chatappandroid.model.Receiver
-import com.sreshtha.chatappandroid.util.Constants
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
+
+
+// todo sound when message is send
+// todo align messages correctly
+// todo observe when receivers sends
 
 class ChatFragment:Fragment() {
     private  var chatBinding:FragmentChatBinding?=null
@@ -28,6 +33,12 @@ class ChatFragment:Fragment() {
     private lateinit var mViewModel: HomeViewModel
     private var receiver:Receiver?=null
     private val db = Firebase.firestore
+    private val rvList =  mutableListOf<ChatRecyclerViewItem>()
+
+
+    companion object{
+        const val TAG = "CHAT_FRAGMENT"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +54,8 @@ class ChatFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showEmptyLabel(true)
+
         val bottomNav = (activity as HomeActivity).findViewById<np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView>(R.id.bottom_nav_view)
         bottomNav.visibility = View.GONE
 
@@ -56,14 +69,9 @@ class ChatFragment:Fragment() {
             }
         }
 
-        setUpRecyclerView()
+        initMessages()
 
-        chatAdapter.differ.submitList(
-            listOf(
-                ChatRecyclerViewItem(nickname = "ABC", message = Message("hello","ds",true)),
-                ChatRecyclerViewItem(nickname = "RECEIVER", message = Message("hello","ds",false))
-            ).reversed()
-        )
+        setUpRecyclerView()
 
         chatBinding?.apply {
             ivBackBtn.setOnClickListener {
@@ -104,25 +112,122 @@ class ChatFragment:Fragment() {
 
 
     private fun sendMessage(text:String){
-        // to Sender/Receiver
+
         if(receiver==null){
-            //todo log
+            Log.d(TAG,"receiver is null !")
+            return
+        }
+        // to Sender/Receiver
+        db.collection(mViewModel.currentUser.email.toString()).document(receiver!!.email).get()
+            .addOnFailureListener {
+                Log.d(TAG,it.toString())
+            }
+            .addOnSuccessListener {
+                Log.d(TAG,"get doc from firestore: success")
+                val messages = it.toObject(Messages::class.java)
+                if(messages!=null){
+                    val newMessageList = mutableListOf<Message>()
+                    messages.messages.forEach {
+                        newMessageList.add(it)
+                    }
+
+                    val newMessage = Message(description = text, timeStamp = mViewModel.getCurrentTime(), isCurrentUserSender = true)
+                    newMessageList.add(newMessage)
+                    val newMessages = Messages(newMessageList)
+
+                    db.collection(mViewModel.currentUser.email.toString()).document(receiver!!.email).set(newMessages)
+                        .addOnSuccessListener {
+                            rvList.add(ChatRecyclerViewItem(nickname = mViewModel.currentUser.displayName.toString(), message = newMessage))
+                            chatAdapter.differ.submitList(rvList)
+                            chatBinding?.etTypeHere?.text?.clear()
+                            Log.d(TAG,"setting new message : success")
+                        }
+                        .addOnFailureListener {
+                            Log.d(TAG,it.toString())
+                        }
+
+                }
+                else{
+                    Log.d(TAG,"messages is null !")
+                }
+            }
+
+
+        // to Receiver/Sender
+        db.collection(receiver!!.email).document(mViewModel.currentUser.email.toString()).get()
+            .addOnFailureListener {
+                Log.d(TAG,it.toString())
+            }
+            .addOnSuccessListener {
+                Log.d(TAG,"get doc from firestore: success")
+                val messages = it.toObject(Messages::class.java)
+                if(messages!=null){
+                    val newMessageList = mutableListOf<Message>()
+                    messages.messages.forEach {
+                        newMessageList.add(it)
+                    }
+
+                    val newMessage = Message(description = text, timeStamp = mViewModel.getCurrentTime(), isCurrentUserSender = false)
+                    newMessageList.add(newMessage)
+
+                    val newMessages = Messages(newMessageList)
+
+                    db.collection(mViewModel.currentUser.email.toString()).document(receiver!!.email).set(newMessages)
+                        .addOnSuccessListener {
+                            Log.d(TAG,"setting new message : success")
+                        }
+                        .addOnFailureListener {
+                            Log.d(TAG,it.toString())
+                        }
+                }
+                else{
+                    Log.d(TAG,"messages is null !")
+                }
+            }
+
+    }
+
+
+    private fun initMessages(){
+        if(receiver==null){
+            showEmptyLabel(true)
+            Log.d(TAG,"receiver is null!")
             return
         }
         db.collection(mViewModel.currentUser.email.toString()).document(receiver!!.email).get()
             .addOnFailureListener {
-                //todo log
+                showEmptyLabel(true)
+                Log.d(TAG,it.toString())
             }
             .addOnSuccessListener {
+                val messages = it.toObject(Messages::class.java)
+                if(messages==null || messages.messages.size<=1){
+                    showEmptyLabel(true)
+                }
+                else{
+                    showEmptyLabel(false)
+                    messages.messages.forEach {
+                        if(it.timeStamp=="-1"){
+                            //nothing todo
+                        }
+                        else if(it.isCurrentUserSender){
+                            rvList.add(ChatRecyclerViewItem(mViewModel.currentUser.displayName.toString(), it))
+                        }
+                        else{
+                            rvList.add(ChatRecyclerViewItem(receiver!!.nickname, it))
+                        }
+                    }
 
+                    chatAdapter.differ.submitList(rvList)
+                }
             }
+    }
 
-
-
-        // to Receiver/Sender
-
-
-
+    private fun showEmptyLabel(boolean: Boolean){
+        when(boolean){
+            true -> chatBinding?.llLabelEmptyRv?.visibility = View.VISIBLE
+            false -> chatBinding?.llLabelEmptyRv?.visibility = View.GONE
+        }
     }
 
 }

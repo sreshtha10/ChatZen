@@ -1,8 +1,10 @@
 package com.sreshtha.chatappandroid.model
 
+import java.io.Serializable
 
-class Message(
-    val description: String,
-    val timeStamp: String,
-    val isCurrentUserSender: Boolean
-)
+
+data class Message(
+    val description: String = "",
+    val timeStamp: String = "",
+    val isCurrentUserSender: Boolean = false
+):Serializable

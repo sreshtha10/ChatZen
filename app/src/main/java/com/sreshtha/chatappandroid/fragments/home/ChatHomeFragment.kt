@@ -83,6 +83,7 @@ class ChatHomeFragment : Fragment() {
                     return@observe
                 }
             }
+            showEmptyLabel(false)
             rvList.add(receiver)
             adapter.differ.submitList(rvList)
             chatHomeBinding?.dotLoader?.visibility = View.GONE
@@ -162,7 +163,7 @@ class ChatHomeFragment : Fragment() {
 
     private fun initChat(email: String) {
         val msg = Message("INIT", "-1", true)
-
+        showEmptyLabel(false)
         // TODO check if user exists or not
         var doesUserExist = false
         db.collection(Constants.USER_REF).document(Constants.USERS_DOC).get()
@@ -319,12 +320,14 @@ class ChatHomeFragment : Fragment() {
         chatHomeBinding?.dotLoader?.visibility = View.VISIBLE
         db.collection(mViewModel.currentUser.email.toString()).get()
             .addOnFailureListener {
+                showEmptyLabel(true)
                 chatHomeBinding?.dotLoader?.visibility = View.GONE
                 Log.d(TAG, it.toString())
             }
             .addOnSuccessListener {
                 val docs = it.documents
                 if (docs.isEmpty()) {
+                    showEmptyLabel(true)
                     chatHomeBinding?.dotLoader?.visibility = View.GONE
                     return@addOnSuccessListener
                 }
@@ -354,6 +357,13 @@ class ChatHomeFragment : Fragment() {
             }
         }
         return false
+    }
+
+    private fun showEmptyLabel(boolean: Boolean){
+        when(boolean){
+            true -> chatHomeBinding?.llLabelEmptyRv?.visibility = View.VISIBLE
+            false -> chatHomeBinding?.llLabelEmptyRv?.visibility = View.GONE
+        }
     }
 
 }

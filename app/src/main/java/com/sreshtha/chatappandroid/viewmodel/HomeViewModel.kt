@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.sreshtha.chatappandroid.ChatAppAndroid
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.*
 import javax.inject.Inject
 
 
@@ -33,6 +34,12 @@ class HomeViewModel @Inject constructor(
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
             else -> return false
         }
+    }
+
+    fun getCurrentTime():String{
+        val data =  Calendar.getInstance().time.toString().split(" ")
+        val time = data[3].split(":")
+        return data[0]+" "+data[1]+" "+data[2]+" "+time[0]+":"+time[1]
     }
 
 }
