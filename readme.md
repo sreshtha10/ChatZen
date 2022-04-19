@@ -94,4 +94,4 @@ Android 9 (api level 28) and above.
 
 ## License
 
-This app is licensed under the MIT License. See [LICENSE]() for the full license text.
+This app is licensed under the Apache License Version 2.0 License. See [LICENSE](https://github.com/sreshtha10/ChatAppAndroid/blob/master/LICENSE) for the full license text.
