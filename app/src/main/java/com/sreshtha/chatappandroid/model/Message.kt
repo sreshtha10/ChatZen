@@ -6,5 +6,5 @@ import java.io.Serializable
 data class Message(
     val description: String = "",
     val timeStamp: String = "",
-    val isCurrentUserSender: Boolean = false
+    val currentUserSender: Boolean = false
 ):Serializable

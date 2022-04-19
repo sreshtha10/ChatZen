@@ -42,4 +42,9 @@ class HomeViewModel @Inject constructor(
         return data[0]+" "+data[1]+" "+data[2]+" "+time[0]+":"+time[1]
     }
 
+
+    fun getMessagesFromHash(){
+
+    }
+
 }

@@ -67,7 +67,7 @@ class ChatRecyclerViewAdapter : RecyclerView.Adapter<ChatRecyclerViewHolder>() {
 
 
     override fun getItemViewType(position: Int): Int {
-        return when(differ.currentList[position].message.isCurrentUserSender){
+        return when(differ.currentList[position].message.currentUserSender){
             true -> R.layout.item_sender_chat
             false -> R.layout.item_receiver_chat
         }

@@ -23,8 +23,6 @@ import com.sreshtha.chatappandroid.model.Receiver
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
 
 
-// todo sound when message is send
-// todo align messages correctly
 // todo observe when receivers sends
 
 class ChatFragment:Fragment() {
@@ -131,7 +129,7 @@ class ChatFragment:Fragment() {
                         newMessageList.add(it)
                     }
 
-                    val newMessage = Message(description = text, timeStamp = mViewModel.getCurrentTime(), isCurrentUserSender = true)
+                    val newMessage = Message(description = text, timeStamp = mViewModel.getCurrentTime(), currentUserSender = true)
                     newMessageList.add(newMessage)
                     val newMessages = Messages(newMessageList)
 
@@ -168,10 +166,11 @@ class ChatFragment:Fragment() {
                         newMessageList.add(it)
                     }
 
-                    val newMessage = Message(description = text, timeStamp = mViewModel.getCurrentTime(), isCurrentUserSender = false)
+                    val newMessage = Message(description = text, timeStamp = mViewModel.getCurrentTime(), currentUserSender = false)
                     newMessageList.add(newMessage)
 
                     val newMessages = Messages(newMessageList)
+                    Log.d(TAG,newMessages.toString())
 
                     db.collection(receiver!!.email).document(mViewModel.currentUser.email.toString()).set(newMessages)
                         .addOnSuccessListener {
@@ -201,17 +200,21 @@ class ChatFragment:Fragment() {
                 Log.d(TAG,it.toString())
             }
             .addOnSuccessListener {
+                //val gson = GsonBuilder().create()
+                //val messages = gson.fromJson(it.toString(),Messages::class.java)
                 val messages = it.toObject(Messages::class.java)
+                Log.d(TAG,it.toString())
                 if(messages==null || messages.messages.size<=1){
                     showEmptyLabel(true)
                 }
                 else{
                     showEmptyLabel(false)
                     messages.messages.forEach {
+                        Log.d(TAG,it.currentUserSender.toString())
                         if(it.timeStamp=="-1"){
                             //nothing todo
                         }
-                        else if(it.isCurrentUserSender){
+                        else if(it.currentUserSender){
                             rvList.add(ChatRecyclerViewItem(mViewModel.currentUser.displayName.toString(), it))
                         }
                         else{
@@ -221,7 +224,7 @@ class ChatFragment:Fragment() {
 
                     chatAdapter.differ.submitList(rvList.reversed())
 
-                    Log.d(TAG,chatAdapter.differ.currentList[chatAdapter.differ.currentList.size-1].message.isCurrentUserSender.toString())
+                    Log.d(TAG,chatAdapter.differ.currentList[chatAdapter.differ.currentList.size-1].message.currentUserSender.toString())
                 }
             }
     }
