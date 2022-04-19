@@ -126,6 +126,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_google" />
 
+    <TextView
+        android:id="@+id/tv_reset_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/regular"
+        android:text="@string/forgot_password"
+        android:textColor="@color/btnColor"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_goto_signup" />
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

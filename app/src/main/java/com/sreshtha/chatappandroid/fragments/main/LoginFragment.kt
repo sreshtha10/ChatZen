@@ -1,14 +1,18 @@
 package com.sreshtha.chatappandroid.fragments.main
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.activities.MainActivity
@@ -67,6 +71,10 @@ class LoginFragment : Fragment() {
                 Log.d(TAG, "login to google clicked!")
             }
 
+            tvResetPassword.setOnClickListener {
+                resetPassword()
+            }
+
         }
 
     }
@@ -74,6 +82,47 @@ class LoginFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         loginBinding = null
+    }
+
+
+    private fun resetPassword(){
+        val custView = layoutInflater.inflate(R.layout.alert_edit_box, null)
+        custView.findViewById<TextInputLayout>(R.id.text_input_layout_nickname).hint =
+            "Enter your email address"
+        val alertDialog = AlertDialog.Builder(requireContext()).create()
+        alertDialog.setCancelable(false)
+
+        alertDialog.setView(custView)
+        alertDialog.show()
+
+
+        val btnCancel = custView.findViewById<Button>(R.id.btn_cancel)
+        val btnOk = custView.findViewById<Button>(R.id.btn_ok)
+
+        btnCancel.setOnClickListener {
+            alertDialog.cancel()
+        }
+
+        btnOk.setOnClickListener {
+            val email = custView.findViewById<TextInputEditText>(R.id.et_nickname).text.toString()
+            if(email.isEmpty()){
+                Toast.makeText(activity, "Invalid Email!",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(activity, "Email Sent!",Toast.LENGTH_SHORT).show()
+                        alertDialog.cancel()
+                        Log.d(TAG, "Email sent.")
+                    }
+                    else{
+                        Toast.makeText(activity, "Email not sent!",Toast.LENGTH_SHORT).show()
+                        alertDialog.cancel()
+                    }
+                }
+        }
     }
 
 

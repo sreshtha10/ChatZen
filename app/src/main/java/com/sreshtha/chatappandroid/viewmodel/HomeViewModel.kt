@@ -43,8 +43,5 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun getMessagesFromHash(){
-
-    }
 
 }
