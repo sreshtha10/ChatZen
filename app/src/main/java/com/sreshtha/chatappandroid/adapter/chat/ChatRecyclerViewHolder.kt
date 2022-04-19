@@ -14,7 +14,7 @@ sealed class ChatRecyclerViewHolder(
          fun bind(senderChatItem: ChatRecyclerViewItem){
              itemSenderChatBinding.apply {
                  tvMessage.text = senderChatItem.message.description
-                 tvNickname.text = senderChatItem.nickname
+                 tvNickname.text = "You"
                  tvTimeStamp.text = senderChatItem.message.timeStamp
              }
          }
