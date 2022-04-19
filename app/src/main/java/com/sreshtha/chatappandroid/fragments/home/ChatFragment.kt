@@ -1,6 +1,7 @@
 package com.sreshtha.chatappandroid.fragments.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.sreshtha.chatappandroid.model.Message
 import com.sreshtha.chatappandroid.model.Messages
 import com.sreshtha.chatappandroid.model.Receiver
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
+import java.util.*
 
 
 // todo observe when receivers sends
@@ -31,7 +33,7 @@ class ChatFragment:Fragment() {
     private lateinit var mViewModel: HomeViewModel
     private var receiver:Receiver?=null
     private val db = Firebase.firestore
-    private val rvList =  mutableListOf<ChatRecyclerViewItem>()
+    private var rvList =  mutableListOf<ChatRecyclerViewItem>()
 
 
     companion object{
@@ -54,6 +56,7 @@ class ChatFragment:Fragment() {
 
         showEmptyLabel(true)
 
+
         val bottomNav = (activity as HomeActivity).findViewById<np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView>(R.id.bottom_nav_view)
         bottomNav.visibility = View.GONE
 
@@ -67,6 +70,7 @@ class ChatFragment:Fragment() {
             }
         }
 
+        updateChat()
         initMessages()
 
         setUpRecyclerView()
@@ -208,6 +212,7 @@ class ChatFragment:Fragment() {
                     showEmptyLabel(true)
                 }
                 else{
+                    val newList = mutableListOf<ChatRecyclerViewItem>()
                     showEmptyLabel(false)
                     messages.messages.forEach {
                         Log.d(TAG,it.currentUserSender.toString())
@@ -215,13 +220,19 @@ class ChatFragment:Fragment() {
                             //nothing todo
                         }
                         else if(it.currentUserSender){
-                            rvList.add(ChatRecyclerViewItem(mViewModel.currentUser.displayName.toString(), it))
+                            newList.add(ChatRecyclerViewItem(mViewModel.currentUser.displayName.toString(), it))
                         }
                         else{
-                            rvList.add(ChatRecyclerViewItem(receiver!!.nickname, it))
+                            newList.add(ChatRecyclerViewItem(receiver!!.nickname, it))
                         }
                     }
 
+                    if(newList.size == rvList.size){
+                        return@addOnSuccessListener
+                    }
+                    else{
+                        rvList = newList
+                    }
                     chatAdapter.differ.submitList(rvList.reversed())
 
                     Log.d(TAG,chatAdapter.differ.currentList[chatAdapter.differ.currentList.size-1].message.currentUserSender.toString())
@@ -234,6 +245,17 @@ class ChatFragment:Fragment() {
             true -> chatBinding?.llLabelEmptyRv?.visibility = View.VISIBLE
             false -> chatBinding?.llLabelEmptyRv?.visibility = View.GONE
         }
+    }
+
+    private fun updateChat(){
+        val timer = Timer()
+
+        val task = object: TimerTask(){
+            override fun run() {
+                initMessages()
+            }
+        }
+        timer.schedule(task,0,100)
     }
 
 }
