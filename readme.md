@@ -45,7 +45,7 @@ A chat app for Android written in Kotlin using MVVM.
 
 1. Latency is higher than that of chat apps built using websockets.
 
-2. Since, cloud functions are not available in [Spark Plan of Firebase](https://firebase.google.com/pricing), therefore for receiving messages app has to check constantly for updates.
+2. Since, cloud functions are not available in [Spark Plan of Firebase](https://firebase.google.com/pricing), therefore for receiving messages, app has to check constantly for updates.
 
 ## Compatibility
 
