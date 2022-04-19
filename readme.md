@@ -11,6 +11,8 @@ A chat app for Android written in Kotlin using MVVM.
     * Email and password
     * Google Auth
 
+2. Reset Password
+
 2. Sending and Receiving messages
 
 3. User can update their profile by adding profile pictures, nicknames, etc.
@@ -40,6 +42,8 @@ A chat app for Android written in Kotlin using MVVM.
 
 8. [Navigation Components](https://developer.android.com/guide/navigation/navigation-getting-started)
 
+9. [Dot Loader](https://github.com/bhargavms/DotLoader)
+
 
 ## Limitations
 
@@ -50,3 +54,44 @@ A chat app for Android written in Kotlin using MVVM.
 ## Compatibility
 
 Android 9 (api level 28) and above.
+
+
+## Preview
+
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="screenshots/1.png" ></td>
+    <td><img src="screenshots/8.jpg"></td>
+
+  </tr>
+    <tr>
+    <td><img src="screenshots/2.png" ></td>
+    <td><img src="screenshots/3.png"></td>
+
+  </tr>
+   <tr>
+    <td><img src="screenshots/4.png" ></td>
+    <td><img src="screenshots/5.png"></td>
+    </td>
+  </tr>
+
+ <tr>
+    <td><img src="screenshots/6.png" ></td>
+    <td><img src="screenshots/7.png"></td>
+    </td>
+  </tr>
+ </table>
+
+
+ ## Upcoming Features
+ 
+1. Group Chats
+2. Image Sharing
+3. Audio Sharing
+
+
+## License
+
+This app is licensed under the MIT License. See [LICENSE]() for the full license text.
