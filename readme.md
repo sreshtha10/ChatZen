@@ -58,8 +58,6 @@ Android 9 (api level 28) and above.
 
 ## Preview
 
-## Screenshots
-
 <table>
   <tr>
     <td><img src="screenshots/1.png" ></td>
