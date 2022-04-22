@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,9 +56,18 @@ class ChatFragment:Fragment() {
 
         showEmptyLabel(true)
 
-
         val bottomNav = (activity as HomeActivity).findViewById<np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView>(R.id.bottom_nav_view)
         bottomNav.visibility = View.GONE
+
+
+        val backPressedCallback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                bottomNav.visibility = View.VISIBLE
+                findNavController().navigate(R.id.goto_chatHomeFragment)
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,backPressedCallback)
 
         val bundle = this.arguments
         if(bundle!=null){
