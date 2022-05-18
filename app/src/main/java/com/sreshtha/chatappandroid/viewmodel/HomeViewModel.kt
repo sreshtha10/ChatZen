@@ -36,6 +36,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
     fun getCurrentTime():String{
         val data =  Calendar.getInstance().time.toString().split(" ")
         val time = data[3].split(":")

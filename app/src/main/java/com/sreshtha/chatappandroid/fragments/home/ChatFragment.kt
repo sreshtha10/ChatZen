@@ -21,6 +21,7 @@ import com.sreshtha.chatappandroid.model.ChatRecyclerViewItem
 import com.sreshtha.chatappandroid.model.Message
 import com.sreshtha.chatappandroid.model.Messages
 import com.sreshtha.chatappandroid.model.Receiver
+import com.sreshtha.chatappandroid.util.Utility
 import com.sreshtha.chatappandroid.viewmodel.HomeViewModel
 import java.util.*
 

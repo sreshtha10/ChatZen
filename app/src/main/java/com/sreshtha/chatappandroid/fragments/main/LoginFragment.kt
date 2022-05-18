@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.activities.MainActivity
 import com.sreshtha.chatappandroid.databinding.FragmentLoginBinding
+import com.sreshtha.chatappandroid.util.Utility
 
 class LoginFragment : Fragment() {
 
@@ -48,7 +49,7 @@ class LoginFragment : Fragment() {
 
             btnLogin.setOnClickListener {
 
-                if (etEmail.text.isEmpty() || etPassword.text.isEmpty()) {
+                if (!Utility.validateLoginInput(etEmail.text.toString(), etPassword.text.toString())) {
                     Snackbar.make(view, "Empty Fields Not Allowed!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }

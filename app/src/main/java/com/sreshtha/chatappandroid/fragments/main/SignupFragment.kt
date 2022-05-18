@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.sreshtha.chatappandroid.R
 import com.sreshtha.chatappandroid.activities.MainActivity
 import com.sreshtha.chatappandroid.databinding.FragmentSignupBinding
-import java.util.regex.Pattern
+import com.sreshtha.chatappandroid.util.Utility
 
 class SignupFragment : Fragment() {
     private var signupBinding: FragmentSignupBinding? = null
@@ -47,15 +47,15 @@ class SignupFragment : Fragment() {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
                 val confirmPass = etConfirmPassword.text.toString()
-                if (email.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
+                if(Utility.validateRegistrationInput(email,password,confirmPass)) {
                     Snackbar.make(view, "Empty Fields not allowed!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                if (!isValidEmail(email)) {
+                if (!Utility.isValidEmail(email)) {
                     Snackbar.make(view, "Invalid Email!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                if (password != confirmPass) {
+                if (!Utility.passwordIsSameAsConfirmPassword(password,confirmPass)) {
                     Snackbar.make(view, "Passwords do not match!", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -123,12 +123,6 @@ class SignupFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         signupBinding = null
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        val pattern = Pattern.compile(".+@.+\\.[a-z]+")
-        val matcher = pattern.matcher(email)
-        return matcher.matches()
     }
 
     private fun passwordStrength(password: String): Int {
